@@ -16,6 +16,8 @@ typedef uint64_t uint64;
 
 typedef uint16_t NetID;
 
+11111111
+
 #define INVAILD_SOCKETID 0
 
 #endif

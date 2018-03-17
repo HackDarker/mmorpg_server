@@ -1,0 +1,91 @@
+#ifndef COMMOPCODES__H__
+#define COMMOPCODES__H__
+
+enum CommOpcodes // 服务器到服务器间的交互
+{
+	C_S2S_PING						= 1,
+	S_S2S_PONG						= 2,
+	C_S2S_REGISTER					= 3,
+	S_S2S_REGISTER					= 4,
+
+	C_S2S_QUERY						= 5,
+	S_S2S_QUERY						= 6,
+	C_S2S_EXEC						= 7, // crossproxy消息复用(用于通知服务器关闭)
+
+	S_S2S_BROADCAST					= 8, // 广播消息
+
+	// count
+	S2S_COUNT,
+};
+
+enum //登陆服与游戏服的协议
+{
+	L2G_ENTER = 1,
+	G2L_ENTER = 2,
+
+	LG_OP_COUNT
+};
+
+enum // 与数据库服的交互协议
+{
+	L2D_ROLE_LIST = 1,
+	D2L_ROLE_LIST = 2,
+	L2D_ROLE_CREATE = 3,
+	D2L_ROLE_CREATE = 4,
+	L2D_ROLE_DELETE = 5,
+	D2L_ROLE_DELETE = 6,
+	L2D_ROLE_SELECT = 7,
+	D2L_ROLE_SELECT = 8,
+
+	L2D_ROLE_VERIFY = 9,
+	D2L_ROLE_VERIFY = 10,
+	LD_OP_COUNT
+};
+
+enum // 与数据库服的交互协议
+{
+	G2D_MONEY_QUERY = 11,
+	D2G_MONEY_QUERY = 12,
+	G2D_MONEY_CONSUME = 13,
+	D2G_MONEY_CONSUME = 14,
+	G2D_MONEY_REPORT = 15,
+	D2G_MONEY_REPORT = 16,
+	G2D_MONEY_NEWTASKINFO = 17,
+	D2G_MONEY_NEWTASKINFO = 18,
+	G2D_MONEY_ADD = 19,
+	D2G_MONEY_ADD = 20,
+	G2D_MONEY_QUERYSUM = 21,
+	D2G_MONEY_QUERYSUM = 22,
+
+	G2D_HTTP_REQ = 29,
+	D2G_HTTP_REQ = 30,
+
+	G2D_TO_ALL_THREAD =35,
+};
+
+enum
+{
+	COMM_FLAG_DATABIG  = 0x01,
+	COMM_FLAG_DATABEGIN = 0x02,
+	COMM_FLAG_DATAEND   = 0x04,
+};
+
+enum
+{
+	G2C_ROLE_REMOVE = 3011,
+	G2C_OBJECT_REMOVE = 3013,
+	G2C_OBJECT_UPDATE = 3014,
+};
+
+enum ServerType
+{
+	TYPE_DB_SERVER			= 0,
+	TYPE_BASE_SERVER		= 1,
+	TYPE_MAP_SERVER			= 2,
+	TYPE_LOGIN_SERVER		= 3,
+	TYPE_CONNECT_SERVER		= 4,
+	TYPE_CROSS_PROXY		= 5,
+	TYPE_CROSS_MAP_SERVER	= 6,
+};
+
+#endif

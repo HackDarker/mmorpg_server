@@ -1,0 +1,15 @@
+package db;
+
+message PlayerInfo{
+    optional fixed32 uid = 2[default = 0];
+    optional string name = 4[default = ''];
+    optional uint32 sex  = 5[default = 0];
+}
+
+message L2D_ROLE_LIST{
+	optional fixed32 account_id = 1[default = 0];
+}
+
+message D2L_ROLE_LIST{
+    repeated PlayerInfo player_info_list = 1;
+}

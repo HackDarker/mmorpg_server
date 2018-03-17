@@ -1,0 +1,4 @@
+loadLuaFiles = {
+	"../common",
+	"handle",
+}

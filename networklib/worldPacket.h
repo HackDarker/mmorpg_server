@@ -2,6 +2,7 @@
 #define WORLDPACKET_H
 
 #include "cmsgpack.h"
+#include <string>
 
 class WorldPacket
 {

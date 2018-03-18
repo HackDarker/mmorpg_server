@@ -1,6 +1,5 @@
 #include "../common/commonOpcode.h"
 #include "../common/util_time.h"
-#include "../networklib/netPacket.h"
 #include "commonServer.h"
 #include "luaProcMgr.h"
 
@@ -27,7 +26,7 @@ void CommServer::SetServerInfo(NetID netId,std::string ip,uint16_t port,uint32_t
 	m_lastPing = nowTime;
 }
 
-void CommServer::QueueRecvPacket(MsgPacket* packet)
+void CommServer::QueueRecvPacket(WorldPacket* packet)
 {
 	printf("opcode is %u size is %u00000000000000\n", packet->GetOpcode(),packet->Size());
 	m_recvPacketQueue.Push(packet);
@@ -61,23 +60,23 @@ int CommServer::Update()
 	}
 }
 
-void CommServer::HandlePing(MsgPacket* packet)
+void CommServer::HandlePing(WorldPacket* packet)
 {
 	
 }
 
-void CommServer::HandleRegister(MsgPacket* packet)
+void CommServer::HandleRegister(WorldPacket* packet)
 {
 
 }
 
-void CommServer::HandleQuery(MsgPacket* packet)
+void CommServer::HandleQuery(WorldPacket* packet)
 {
 	//new 一个新包出来存进去
 	LuaProcMgr::Instance()->AddPacket(packet);
 }
 
-void CommServer::HandleExec(MsgPacket* packet)
+void CommServer::HandleExec(WorldPacket* packet)
 {
 
 }

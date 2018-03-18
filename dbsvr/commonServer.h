@@ -4,7 +4,7 @@
 #include "../common/common.h"
 #include "../common/fastQueue.h"
 #include "../threadlib/mutex.h"
-#include "../networklib/netPacket.h"
+#include "../networklib/worldPacket.h"
 #include <string>
 
 class CommServer
@@ -17,10 +17,10 @@ public:
 	void QueueRecvPacket(MsgPacket* packet);
 	int  Update();
 private:
-	void HandlePing(MsgPacket* packet);
-	void HandleRegister(MsgPacket* packet);
-	void HandleQuery(MsgPacket* packet);
-	void HandleExec(MsgPacket* packet);
+	void HandlePing(WorldPacket* packet);
+	void HandleRegister(WorldPacket* packet);
+	void HandleQuery(WorldPacket* packet);
+	void HandleExec(WorldPacket* packet);
 private:
 	NetID	 m_netid;
 	std::string	 m_ip;
@@ -29,7 +29,7 @@ private:
 	uint32_t m_lastPing;
 	bool	 m_checked;
 
-	FastQueue<MsgPacket*, Mutex> m_recvPacketQueue;
+	FastQueue<WorldPacket*, Mutex> m_recvPacketQueue;
 };
 
 #endif

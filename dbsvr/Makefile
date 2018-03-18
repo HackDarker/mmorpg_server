@@ -11,9 +11,9 @@ OBJS=$(SRCS:.cpp=.o)
 PROG=./dbsvr
 
 $(PROG): $(OBJS)
-	CXX -g $(OBJS) -o $(PROG) $(LIBS) -lpthread -ldl -lhiredis
+	$CXX -g $(OBJS) -o $(PROG) $(LIBS) -lpthread -ldl -lhiredis
 .cpp.o:
-	CXX $(FLAGS) -fPIC $< -o $@
+	$CXX $(FLAGS) -fPIC $< -o $@
 
 clean:
 	rm -rf $(OBJS) $(PROG) $(PROG).core

@@ -37,11 +37,11 @@ void CommServer::QueueRecvPacket(WorldPacket* packet)
 
 int CommServer::Update()
 {
-	MsgPacket* packet;
+	WorldPacket* packet;
 	while (packet = m_recvPacketQueue.Pop())
 	{
 		uint16_t op = packet->GetOpcode();
-		printf("opcode is %u size is %u1111111111111\n", packet->GetOpcode(),packet->Size());
+		printf("opcode is %u size is %u1111111111111\n", packet->GetOpcode(),packet->size());
 		switch(op){
 			case C_S2S_PING:
 				HandlePing(packet);break;

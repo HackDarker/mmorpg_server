@@ -7,9 +7,7 @@ LIBS=../3rd/liblua.a
 SRCDIRS=. ../common ../networklib ./threadlib
 
 SRCS=$(foreach dir,$(SRCDIRS),$(wildcard $(dir)/*.cpp))
-echo $SRCS
 OBJS=$(SRCS:.cpp=.o)
-echo $OBJS
 PROG=./dbsvr
 
 $(PROG): $(OBJS)

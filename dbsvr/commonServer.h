@@ -14,7 +14,7 @@ public:
 	~CommServer();
 
 	void SetServerInfo(NetID netId,std::string ip,uint16_t port,uint32_t nowTime);
-	void QueueRecvPacket(MsgPacket* packet);
+	void QueueRecvPacket(WorldPacket* packet);
 	int  Update();
 private:
 	void HandlePing(WorldPacket* packet);

@@ -1,4 +1,3 @@
-CXX=g++
 
 FLAGS=-c -Wall -O2 -g
 
@@ -11,9 +10,9 @@ OBJS=$(SRCS:.cpp=.o)
 PROG=./dbsvr
 
 $(PROG): $(OBJS)
-	$CXX -g $(OBJS) -o $(PROG) $(LIBS) -lpthread -ldl -lhiredis
+	g++ -g $(OBJS) -o $(PROG) $(LIBS) -lpthread -ldl -lhiredis
 .cpp.o:
-	$CXX $(FLAGS) -fPIC $< -o $@
+	g++ $(FLAGS) -fPIC $< -o $@
 
 clean:
 	rm -rf $(OBJS) $(PROG) $(PROG).core

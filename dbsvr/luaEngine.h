@@ -4,7 +4,7 @@
 #include "../common/common.h"
 #include "../common/lua_tinker.h"
 
-class MsgPacket;
+class WorldPacket;
 
 class LuaEngine
 {
@@ -17,8 +17,8 @@ public:
 	
 	bool Init();
 
-	void ProcQuery(uint32_t accountId, uint32_t playerId, MsgPacket* pack);
-	void ProcExec(uint32_t accountId, uint32_t  playerId, MsgPacket* pack);
+	void ProcQuery(uint32_t accountId, uint32_t playerId, WorldPacket* pack);
+	void ProcExec(uint32_t accountId, uint32_t  playerId, WorldPacket* pack);
 private:
 	bool LoadScripts();
 	bool LoadLuaFiles();

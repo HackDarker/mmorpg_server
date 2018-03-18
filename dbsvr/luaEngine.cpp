@@ -157,13 +157,13 @@ void LuaEngine::InitLuaFuncHandle()
 	assert(m_fnProcExec != LUA_REFNIL);
 }
 
-void LuaEngine::ProcQuery(uint32_t accountId, uint32_t playerId, MsgPacket* pack)
+void LuaEngine::ProcQuery(uint32_t accountId, uint32_t playerId, WorldPacket* pack)
 {
 	printf("222222222222222222222222222ProcQuery=====================%u\n",m_fnProcQuery);
-	lua_tinker::call<void, uint32_t, uint32_t, MsgPacket*>(L, m_fnProcQuery, accountId, playerId, pack);
+	lua_tinker::call<void, uint32_t, uint32_t, WorldPacket*>(L, m_fnProcQuery, accountId, playerId, pack);
 }
 
-void LuaEngine::ProcExec(uint32_t accountId, uint32_t playerId, MsgPacket* pack)
+void LuaEngine::ProcExec(uint32_t accountId, uint32_t playerId, WorldPacket* pack)
 {
-	lua_tinker::call<void, uint32_t, uint32_t, MsgPacket*>(L, m_fnProcExec, accountId, playerId, pack);
+	lua_tinker::call<void, uint32_t, uint32_t, WorldPacket*>(L, m_fnProcExec, accountId, playerId, pack);
 }

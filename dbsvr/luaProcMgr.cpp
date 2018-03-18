@@ -1,7 +1,7 @@
 #include "../common/common.h"
 #include "../common/util_time.h"
 #include "../common/lua_tinker.h"
-#include "../networklib/netPacket.h"
+#include "../networklib/worldPacket.h"
 #include "../threadlib/threadpool.h"
 #include "luaEngine.h"
 #include "luaProcMgr.h"
@@ -63,12 +63,12 @@ bool LuaProcThread::run()
 	return false;
 }
 
-void LuaProcThread::HandlePacket(MsgPacket& packet)
+void LuaProcThread::HandlePacket(WorldPacket& packet)
 {	
 	printf("111111111111111111111HandlePacket11111111111111\n");
 	uint16_t opcode = packet.GetOpcode();
 	uint16_t size   = packet.Size();
-	MsgPacket data(opcode,size);
+	WorldPacket data(opcode,size);
 	data.ReadPacket(packet);
 
 

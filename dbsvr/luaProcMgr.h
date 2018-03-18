@@ -5,7 +5,7 @@
 #include "../threadlib/thread.h"
 #include "../threadlib/mutex.h"
 
-class MsgPacket;
+class WorldPacket;
 class LuaEngine;
 
 class LuaProcThread : public ThreadBase
@@ -16,12 +16,12 @@ public:
 
     virtual bool run();
 	virtual void onShutdown();
-	void AddPacket(MsgPacket* packet) { if(packet) m_queue.Push(packet); }
-	void HandlePacket(MsgPacket& packet);
+	void AddPacket(WorldPacket* packet) { if(packet) m_queue.Push(packet); }
+	void HandlePacket(WorldPacket& packet);
 private:
 	bool m_running;
 	LuaEngine* m_engine;
-	FastQueue<MsgPacket*, Mutex> m_queue;
+	FastQueue<WorldPacket*, Mutex> m_queue;
 };
 
 class LuaProcMgr
@@ -35,7 +35,7 @@ public:
 	}
 
 	void Startup();
-	void AddPacket(MsgPacket* packet){if(m_runner) m_runner->AddPacket(packet);}
+	void AddPacket(WorldPacket* packet){if(m_runner) m_runner->AddPacket(packet);}
 private:
 	LuaProcMgr();
 	LuaProcThread* m_runner;

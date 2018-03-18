@@ -28,7 +28,7 @@ void CommServer::SetServerInfo(NetID netId,std::string ip,uint16_t port,uint32_t
 
 void CommServer::QueueRecvPacket(WorldPacket* packet)
 {
-	printf("opcode is %u size is %u00000000000000\n", packet->GetOpcode(),packet->Size());
+	printf("opcode is %u size is %u00000000000000\n", packet->GetOpcode(),packet->size());
 	m_recvPacketQueue.Push(packet);
 	// MsgPacket* p = m_recvPacketQueue.Pop();
 	// printf("opcode is %u size is %uccccccccccccccccc\n", p->GetOpcode(),p->Size());

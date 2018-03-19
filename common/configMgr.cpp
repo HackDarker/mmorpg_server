@@ -72,14 +72,14 @@ bool ConfigMgr::LoadConfig(const char* filename)
 			const char * key = lua_tostring(L,-2);
 			if (lua_type(L,-1) == LUA_TBOOLEAN) {
 				int b = lua_toboolean(L,-1);
-				//m_confMap[key] = b ? "true" : "false";
+				m_confMap[key] = (b ? "true" : "false");
 			} else {
 				const char * value = lua_tostring(L,-1);
 				if (value == NULL) {
 					fprintf(stderr, "Invalid config table key = %s\n", key);
 					exit(1);
 				}
-				//m_confMap[key] = value;
+				m_confMap[key] = value;
 			}
 			lua_pop(L,1);
 		}
@@ -91,31 +91,31 @@ bool ConfigMgr::LoadConfig(const char* filename)
 	return true;
 }
 
-bool ConfigMgr::GetBool(const char* key,int opt)
+bool ConfigMgr::GetBool(std::string key,int opt)
 {
-	std::map<const char*, const char*>::iterator itr = m_confMap.find(key);
+	std::map<std::string, std::string>::iterator itr = m_confMap.find(key);
 	if(itr != m_confMap.end()){
-		return strcmp(itr->second,"true") == 0;
+		return strcmp(itr->second.c_str(),"true") == 0;
 	}
 
 	return opt;
 }
 
-int ConfigMgr::GetInt(const char* key,int opt)
+int ConfigMgr::GetInt(std::string key,int opt)
 {
-	std::map<const char*, const char*>::iterator itr = m_confMap.find(key);
+	std::map<std::sting, std::string>::iterator itr = m_confMap.find(key);
 	if(itr != m_confMap.end()){
-		return strtol(itr->second, NULL, 10);
+		return strtol(itr->second.c_str(), NULL, 10);
 	}
 
 	return opt;
 }
 
-const char* ConfigMgr::GetString(const char* key,const char* opt)
+char* ConfigMgr::GetString(std::string,char* opt)
 {
-	std::map<const char*, const char*>::iterator itr = m_confMap.find(key);
+	std::map<std::string, std::string>::iterator itr = m_confMap.find(key);
 	if(itr != m_confMap.end()){
-		return itr->second;
+		return itr->second.c_str();
 	}
 
 	return opt;

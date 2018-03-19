@@ -21,12 +21,12 @@ public:
 	}
 
 	bool LoadConfig(const char* filename);
-	bool GetBool(const char* key,int opt);
-	int  GetInt(const char* key,int opt);
-	const char* GetString(const char* key,const char* opt); 
+	bool GetBool(std::string key,int opt);
+	int  GetInt(std::string keyy,int opt);
+	char* GetString(std::string key,char* opt); 
 private:
 	ConfigMgr();
-	std::map<const char *key,char* value> m_confMap;
+	std::map<std::string key,std::string value> m_confMap;
 };
 
 #endif

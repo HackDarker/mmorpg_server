@@ -22,7 +22,7 @@ ConfigMgr::~ConfigMgr()
 
 bool ConfigMgr::LoadConfig(const char* filename)
 {
-	/*static const char * load_config = "\
+	static const char * load_config = "\
 		local result = {}\n\
 		local function getenv(name) return assert(os.getenv(name), [[os.getenv() failed: ]] .. name) end\n\
 		local sep = package.config:sub(1,1)\n\
@@ -76,12 +76,12 @@ bool ConfigMgr::LoadConfig(const char* filename)
 				fprintf(stderr, "Invalid config table\n");
 				exit(1);
 			}
-			const char * key = lua_tostring(L,-2);
+			char * key = lua_tostring(L,-2);
 			if (lua_type(L,-1) == LUA_TBOOLEAN) {
 				int b = lua_toboolean(L,-1);
 				m_confMap[key] = (b ? "true" : "false");
 			} else {
-				const char * value = lua_tostring(L,-1);
+				char * value = lua_tostring(L,-1);
 				if (value == NULL) {
 					fprintf(stderr, "Invalid config table key = %s\n", key);
 					exit(1);
@@ -93,7 +93,7 @@ bool ConfigMgr::LoadConfig(const char* filename)
 		lua_pop(L,1);
 	}
 
-	lua_close(L); */
+	lua_close(L); 
 
 	return true;
 }

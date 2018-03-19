@@ -1,3 +1,5 @@
+#include <string.h>
+#include <stdlib.h>
 #include "configMgr.h"
 
 ConfigMgr::ConfigMgr()
@@ -10,7 +12,7 @@ ConfigMgr::~ConfigMgr()
 
 }
 
-bool ConfigMgr::LoadConfig()
+bool ConfigMgr::LoadConfig(const char* filename)
 {
 	static const char * load_config = "\
 		local result = {}\n\
@@ -69,14 +71,14 @@ bool ConfigMgr::LoadConfig()
 			const char * key = lua_tostring(L,-2);
 			if (lua_type(L,-1) == LUA_TBOOLEAN) {
 				int b = lua_toboolean(L,-1);
-				skynet_setenv(key,b ? "true" : "false" );
+				m_confMap[key] = b ? "true" : "false";
 			} else {
 				const char * value = lua_tostring(L,-1);
 				if (value == NULL) {
 					fprintf(stderr, "Invalid config table key = %s\n", key);
 					exit(1);
 				}
-				skynet_setenv(key,value);
+				m_confMap[key] = value;
 			}
 			lua_pop(L,1);
 		}
@@ -92,7 +94,7 @@ bool ConfigMgr::GetBool(const char* key,int opt)
 {
 	std::map<const char*, const char*>::iterator itr = m_confMap.find(key);
 	if(itr != m_confMap.end()){
-		return strcmp(str,"true")==0;
+		return strcmp(itr->second,"true") == 0;
 	}
 
 	return opt;

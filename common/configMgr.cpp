@@ -93,30 +93,30 @@ bool ConfigMgr::LoadConfig(const char* filename)
 
 bool ConfigMgr::GetBool(std::string key,int opt)
 {
-	std::map<std::string, std::string>::iterator itr = m_confMap.find(key);
-	if(itr != m_confMap.end()){
-		return strcmp(itr->second.c_str(),"true") == 0;
-	}
+	// std::map<std::string, std::string>::iterator itr = m_confMap.find(key);
+	// if(itr != m_confMap.end()){
+	// 	return strcmp(itr->second.c_str(),"true") == 0;
+	// }
 
-	return opt;
+	// return opt;
 }
 
 int ConfigMgr::GetInt(std::string key,int opt)
 {
-	std::map<std::sting, std::string>::iterator itr = m_confMap.find(key);
-	if(itr != m_confMap.end()){
-		return strtol(itr->second.c_str(), NULL, 10);
-	}
+	// std::map<std::sting, std::string>::iterator itr = m_confMap.find(key);
+	// if(itr != m_confMap.end()){
+	// 	return strtol(itr->second.c_str(), NULL, 10);
+	// }
 
-	return opt;
+	// return opt;
 }
 
 char* ConfigMgr::GetString(std::string,char* opt)
 {
-	std::map<std::string, std::string>::iterator itr = m_confMap.find(key);
-	if(itr != m_confMap.end()){
-		return itr->second.c_str();
-	}
+	// std::map<std::string, std::string>::iterator itr = m_confMap.find(key);
+	// if(itr != m_confMap.end()){
+	// 	return itr->second.c_str();
+	// }
 
-	return opt;
+	// return opt;
 }

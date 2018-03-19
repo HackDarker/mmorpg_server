@@ -1,5 +1,6 @@
 #include "socketMgr.h"
 #include "socket.h"
+#include "cmsgpacket.h"
 
 Socket::Socket(int fd,int type,uint32_t sendBuffSize,uint32_t recvBuffSize)
 {
@@ -92,8 +93,8 @@ void Socket::OutPacket(uint16_t opcode, size_t len, const void* data)
 
 	// Pass the header to our send buffer
 	// Pass the rest of the packet to our send buffer (if there is any)
-	m_sendBuff.PushData((const uint8_t*)&header, sizeof(header));
-	m_sendBuff.PushData((const uint8_t)data, len);
+	m_sendBuff.PushData((const char*)&header, (uint32_t)sizeof(header));
+	m_sendBuff.PushData((const char*)data, (uint32_t)len);
 	
 	printf("=====================m_sendBuff.GetCur()==============%u\n", m_sendBuff.GetCur());
 	if (m_sendBuff.GetCur() > 0)

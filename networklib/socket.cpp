@@ -200,8 +200,8 @@ void Socket::OnRead()
 			//printf("sizeof(MsgPacketHeader)===== %u %lu %u\n", 
 			//sizeof(MsgPacketHeader),header.opcode,header.size);
 
-			m_opcode    = msg_header_get_opcode(header);
-			m_remaining = msg_header_get_size(header) - sizeof(uint16_t);
+			m_opcode    = mp_header_get_opcode(header);
+			m_remaining = mp_header_set_size(header);
 
 			printf("opcode====%d m_remaining %d===cur%d====\n", m_opcode,m_remaining,GetRecvBuff().GetCur());
 			if((m_remaining+10) > 65535){

@@ -28,20 +28,20 @@ void CommServer::SetServerInfo(NetID netId,std::string ip,uint16_t port,uint32_t
 
 void CommServer::QueueRecvPacket(WorldPacket* packet)
 {
-	printf("opcode is %u size is %u00000000000000\n", packet->GetOpcode(),packet->size());
+	printf("opcode is %u size is %lu00000000000000\n", packet->GetOpcode(),packet->size());
 	m_recvPacketQueue.Push(packet);
 	// MsgPacket* p = m_recvPacketQueue.Pop();
 	// printf("opcode is %u size is %uccccccccccccccccc\n", p->GetOpcode(),p->Size());
 	m_lastPing = getFrameTime();
 }
 
-int CommServer::Update()
+void CommServer::Update()
 {
 	WorldPacket* packet;
 	while (packet = m_recvPacketQueue.Pop())
 	{
 		uint16_t op = packet->GetOpcode();
-		printf("opcode is %u size is %u1111111111111\n", packet->GetOpcode(),packet->size());
+		printf("opcode is %u size is %lu1111111111111\n", packet->GetOpcode(),packet->size());
 		switch(op){
 			case C_S2S_PING:
 				HandlePing(packet);break;

@@ -44,7 +44,7 @@ bool LuaProcThread::run()
 	lua_tinker::call<void>(m_engine->L, "c_initDatabase");
 	lua_tinker::call<void>(m_engine->L, "c_initWorld");
 
-	MsgPacket* packet;
+	WorldPacket* packet;
 	uint32_t startTime;
 	uint32_t diff;
 	while(m_running) {
@@ -67,7 +67,7 @@ void LuaProcThread::HandlePacket(WorldPacket& packet)
 {	
 	printf("111111111111111111111HandlePacket11111111111111\n");
 	uint16_t opcode = packet.GetOpcode();
-	uint16_t size   = packet.Size();
+	uint16_t size   = packet.size();
 	WorldPacket data(opcode,size);
 	data.ReadPacket(packet);
 

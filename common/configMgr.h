@@ -21,7 +21,9 @@ public:
 private:
 	ConfigMgr();
 
-	std::map<std::string key,std::string value> m_confMap;
+	//std::map<std::string,std::string> m_confMap;
+
+	std::map<int, int> m_map;
 };
 
 #endif

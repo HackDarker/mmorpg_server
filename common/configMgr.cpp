@@ -48,8 +48,8 @@ bool ConfigMgr::LoadConfig(const char* filename)
 	struct lua_State *L = luaL_newstate();
 	luaL_openlibs(L);
 
-	int err =  luaL_loadbufferx(L, load_config, strlen(load_config), "=[sever config]");
-	assert(err == LUA_OK);
+	int err = luaL_loadbuffer(L, load_config, strlen(load_config), "=[sever config]");
+	assert(err == 0);
 	lua_pushstring(L, config_file);
 
 	err = lua_pcall(L, 1, 1, 0);

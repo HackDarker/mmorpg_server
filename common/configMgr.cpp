@@ -72,7 +72,7 @@ bool ConfigMgr::LoadConfig(const char* filename)
 			const char * key = lua_tostring(L,-2);
 			if (lua_type(L,-1) == LUA_TBOOLEAN) {
 				int b = lua_toboolean(L,-1);
-				m_confMap[key] = b ? "true" : "false";
+				//m_confMap[key] = b ? "true" : "false";
 			} else {
 				const char * value = lua_tostring(L,-1);
 				if (value == NULL) {

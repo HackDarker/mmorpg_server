@@ -2,6 +2,7 @@
 #define CONFIGMGR_H
 
 #include <map>
+#include <string>
 
 extern "C" 
 {

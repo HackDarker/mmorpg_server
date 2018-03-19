@@ -7,7 +7,7 @@
 #include <queue>
 #include <list>
 #include <algorithm>
-#include "../networklib/netPacket.h"
+#include "../networklib/worldPacket.h"
 #include "luaEngine.h"
 
 #define LUA_MSGPACK "msgpack"
@@ -15,13 +15,9 @@ LUALIB_API int luaopen_msgpack (lua_State *L);
 
 extern "C"
 {
-	#define LUA_PROTOBUF_C "protobuf_c"
-	LUALIB_API int luaopen_protobuf_c (lua_State *L);
-
 	LUALIB_API void my_lua_openlibs(lua_State *L) {
 		static const luaL_Reg lualibs[] = {
 			{LUA_MSGPACK, luaopen_msgpack},
-			{LUA_PROTOBUF_C,luaopen_protobuf_c},
 			{NULL, NULL}
 		};
 

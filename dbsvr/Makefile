@@ -3,7 +3,7 @@ FLAGS=-c -Wall -O2 -g
 
 LIBS=../3rd/liblua.a
 	
-SRCDIRS=. ../common ../networklib ./threadlib
+SRCDIRS=. ../common ../threadlib ../networklib
 
 SRCS=$(foreach dir,$(SRCDIRS),$(wildcard $(dir)/*.cpp))
 OBJS=$(SRCS:.cpp=.o)

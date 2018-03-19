@@ -69,7 +69,7 @@ void Socket::Disconnect()
 	close(m_fd);
 }
 
-void Socket::SendPacket(const MsgPacket* packet)
+void Socket::SendPacket(const WorldPacket* packet)
 {
 	if(!packet) return;
 
@@ -199,7 +199,7 @@ void Socket::OnRead()
 			//printf("sizeof(MsgPacketHeader)===== %u %lu %u\n", 
 			//sizeof(MsgPacketHeader),header.opcode,header.size);
 
-			m_opcode = msg_header_get_opcode(header);
+			m_opcode    = msg_header_get_opcode(header);
 			m_remaining = msg_header_get_size(header) - sizeof(uint16_t);
 
 			printf("opcode====%d m_remaining %d===cur%d====\n", m_opcode,m_remaining,GetRecvBuff().GetCur());
@@ -215,7 +215,7 @@ void Socket::OnRead()
 			return;
 		}
 
-		MsgPacket * netPacket = new MsgPacket(m_opcode, m_remaining);
+		WorldPacket * netPacket = new WorldPacket(m_opcode, m_remaining);
 		if(m_remaining){
 			GetRecvBuff().ReadData((uint8_t*)netPacket->Contents(), m_remaining);
 		}

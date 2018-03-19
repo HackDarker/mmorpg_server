@@ -4,7 +4,7 @@
 #define	MP_LUA_LIB_NAME "msgpack"
 #define MSGPACKET_META_NAME "msgpacket_mate"
 #define C_MSGPACKET_META_NAME "c_msgpacket_mate"
-#define WORLDPACKET_PACKET_NAME "MsgPacket"
+#define WORLDPACKET_PACKET_NAME "WorldPacket"
 #define MSGPACKET_PACKET_NAME "msgpack_name"
 
 static void lua_msgpack_error(lua_State *L, const char* fmt, ...) {

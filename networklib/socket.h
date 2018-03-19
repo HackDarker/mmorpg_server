@@ -11,7 +11,7 @@
 #include <arpa/inet.h>
 #include "buffer.h"
 #include "../threadlib/mutex.h"
-#include "netPacket.h"
+#include "worldPacket.h"
 
 enum SocketStatus
 {
@@ -35,7 +35,7 @@ public:
 	void Disconnect();
 
 	void OnAccept();
-	void SendPacket(const MsgPacket* packet);
+	void SendPacket(const WorldPacket* packet);
 	void OutPacket(uint16_t opcode, size_t len, const void* data);
 	void WriteCallback();
 	void ReadCallback();

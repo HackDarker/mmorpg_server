@@ -1,5 +1,6 @@
 #include <string.h>
 #include <stdlib.h>
+#include <assert.h>
 #include "configMgr.h"
 
 ConfigMgr::ConfigMgr()
@@ -50,7 +51,7 @@ bool ConfigMgr::LoadConfig(const char* filename)
 
 	int err = luaL_loadbuffer(L, load_config, strlen(load_config), "=[sever config]");
 	assert(err == 0);
-	lua_pushstring(L, config_file);
+	lua_pushstring(L, filename);
 
 	err = lua_pcall(L, 1, 1, 0);
 	if (err) {

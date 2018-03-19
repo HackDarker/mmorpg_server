@@ -110,7 +110,7 @@ bool ConfigMgr::GetBool(std::string key,int opt)
 
 int ConfigMgr::GetInt(std::string key,int opt)
 {
-	std::map<std::sting, std::string>::iterator itr = m_confMap.find(key);
+	std::map<std::string, std::string>::iterator itr = m_confMap.find(key);
 	if(itr != m_confMap.end()){
 		return strtol(itr->second.c_str(), NULL, 10);
 	}
@@ -118,7 +118,7 @@ int ConfigMgr::GetInt(std::string key,int opt)
 	return opt;
 }
 
-char* ConfigMgr::GetString(std::string,char* opt)
+char* ConfigMgr::GetString(std::string key,char* opt)
 {
 	std::map<std::string, std::string>::iterator itr = m_confMap.find(key);
 	if(itr != m_confMap.end()){

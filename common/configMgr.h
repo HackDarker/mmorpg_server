@@ -17,7 +17,7 @@ public:
 	bool LoadConfig(const char* filename);
 	bool GetBool(std::string key,int opt);
 	int  GetInt(std::string key,int opt);
-	char* GetString(std::string key,char* opt); 
+	const char* GetString(std::string key,char* opt); 
 private:
 	ConfigMgr();
 

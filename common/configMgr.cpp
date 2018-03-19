@@ -118,7 +118,7 @@ int ConfigMgr::GetInt(std::string key,int opt)
 	return opt;
 }
 
-char* ConfigMgr::GetString(std::string key,char* opt)
+const char* ConfigMgr::GetString(std::string key,char* opt)
 {
 	std::map<std::string, std::string>::iterator itr = m_confMap.find(key);
 	if(itr != m_confMap.end()){

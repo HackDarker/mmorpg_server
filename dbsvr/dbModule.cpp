@@ -113,7 +113,7 @@ bool DbModule::ListenCommserver()
 
 void DbModule::OnRecvCommserverMsg(NetID netid, WorldPacket* packet)
 {
-	printf("OnRecvCommserverMsg=================from netid %u===opcode is %u size is %u===addr%p==\n", netid,packet->GetOpcode(),packet->Size(),packet);
+	printf("OnRecvCommserverMsg=================from netid %u===opcode is %u size is %u===addr%p==\n", netid,packet->GetOpcode(),packet->size(),packet);
 	if (!m_commserver_list[netid])
 	{
 		printf("Dbsvr OnRecv netid is not exist %u\n", netid);

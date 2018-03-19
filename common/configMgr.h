@@ -1,15 +1,8 @@
 #ifndef CONFIGMGR_H
 #define CONFIGMGR_H
 
-#include <map>
 #include <string>
-
-extern "C" 
-{
-	#include "lua.h"
-	#include "lualib.h"
-	#include "lauxlib.h"
-};
+#include <map>
 
 class ConfigMgr
 {

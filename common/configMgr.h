@@ -26,7 +26,7 @@ public:
 	const char* GetString(const char* key,const char* opt); 
 private:
 	ConfigMgr();
-	std::map<char *key,char *value> m_confMap;
+	std::map<const char *key,char* value> m_confMap;
 };
 
 #endif

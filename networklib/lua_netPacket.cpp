@@ -1,4 +1,4 @@
-#include "netPacket.h"
+#include "worldPacket.h"
 #include "lua_netPacket.h"
 
 #define	MP_LUA_LIB_NAME "msgpack"

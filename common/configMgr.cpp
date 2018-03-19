@@ -76,12 +76,12 @@ bool ConfigMgr::LoadConfig(const char* filename)
 				fprintf(stderr, "Invalid config table\n");
 				exit(1);
 			}
-			char * key = lua_tostring(L,-2);
+			const char * key = lua_tostring(L,-2);
 			if (lua_type(L,-1) == LUA_TBOOLEAN) {
 				int b = lua_toboolean(L,-1);
 				m_confMap[key] = (b ? "true" : "false");
 			} else {
-				char * value = lua_tostring(L,-1);
+				const char * value = lua_tostring(L,-1);
 				if (value == NULL) {
 					fprintf(stderr, "Invalid config table key = %s\n", key);
 					exit(1);

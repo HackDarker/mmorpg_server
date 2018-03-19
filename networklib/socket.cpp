@@ -73,7 +73,7 @@ void Socket::SendPacket(const WorldPacket* packet)
 {
 	if(!packet) return;
 
-	OutPacket(packet->GetOpcode(), packet->Size(), packet->Contents());
+	OutPacket(packet->GetOpcode(), packet->size(), packet->contents());
 }
 
 void Socket::OutPacket(uint16_t opcode, size_t len, const void* data)
@@ -87,13 +87,13 @@ void Socket::OutPacket(uint16_t opcode, size_t len, const void* data)
 	LockSendBuff();
 
 	MsgPacketHeader header;
-	msg_header_set_size(header, len);
-	msg_header_set_opcode(header, opcode);
+	mp_header_set_size(header, len);
+	mp_header_set_opcode(header, opcode);
 
 	// Pass the header to our send buffer
 	// Pass the rest of the packet to our send buffer (if there is any)
-	m_sendBuff.PushData((const char*)&header, (uint32_t)sizeof(header));
-	m_sendBuff.PushData((const char*)data, (uint32_t)len);
+	m_sendBuff.PushData((const uint8_t*)&header, sizeof(header));
+	m_sendBuff.PushData((const uint8_t)data, len);
 	
 	printf("=====================m_sendBuff.GetCur()==============%u\n", m_sendBuff.GetCur());
 	if (m_sendBuff.GetCur() > 0)
@@ -217,7 +217,7 @@ void Socket::OnRead()
 
 		WorldPacket * netPacket = new WorldPacket(m_opcode, m_remaining);
 		if(m_remaining){
-			GetRecvBuff().ReadData((uint8_t*)netPacket->Contents(), m_remaining);
+			GetRecvBuff().ReadData((uint8_t*)netPacket->contents(), m_remaining);
 		}
 
 		switch(m_type){

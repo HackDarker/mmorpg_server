@@ -194,7 +194,7 @@ void SocketMgr::Startup()
     } 
 }
 
-void SocketMgr::SendPacket(int fd,MsgPacket* packet)
+void SocketMgr::SendPacket(int fd,WorldPacket* packet)
 {
 	if(fd >= MAX_SOCKET_NUM || !m_sockets[fd])
 	{
@@ -237,7 +237,7 @@ bool SocketWorkerThread::run()
         printf("epoll_wait fd_count %d %d %d\n", fd_count);
         for(int i = 0; i < fd_count; i++)
         {
-        	printf("netid is ==========%d=======\n", events[i].data.u64);
+        	printf("netid is ==========%lu=======\n", events[i].data.u64);
             if(events[i].data.u64 >= MAX_SOCKET_NUM){
                printf("Requested FD that is too high (%u)", events[i].data.fd);
                continue;
@@ -245,19 +245,19 @@ bool SocketWorkerThread::run()
 
             ptr = mgr->m_sockets[events[i].data.u64];
             if (ptr && ptr->HasState(SO_LISTEN)){
-            	printf("==========Accpet=========%u===%d\n",events[i].data.u64,events[i].events & EPOLLIN);
+            	printf("==========Accpet=========%lu===%d\n",events[i].data.u64,events[i].events & EPOLLIN);
             	ptr->OnAccept();//接受连接
 				continue;
             }
 
             if(events[i].events & EPOLLHUP || events[i].events & EPOLLERR){
-				printf("=======EPOLLHUP or EPOLLERR====%u\n",events[i].data.u64);
+				printf("=======EPOLLHUP or EPOLLERR====%lu\n",events[i].data.u64);
                 continue;
             }else if(events[i].events & EPOLLIN){
-            	printf("============EPOLLIN============%u\n",events[i].data.u64);
+            	printf("============EPOLLIN============%lu\n",events[i].data.u64);
                 ptr->ReadCallback(); //读数据
             }else if(events[i].events & EPOLLOUT){
-            	printf("============EPOLLOUT===========%u\n",events[i].data.u64);
+            	printf("============EPOLLOUT===========%lu\n",events[i].data.u64);
                 ptr->LockSendBuff();
                 ptr->WriteCallback();
                 if (ptr->GetSendBuff().GetCur() <= 0){

@@ -79,7 +79,7 @@ bool ConfigMgr::LoadConfig(const char* filename)
 					fprintf(stderr, "Invalid config table key = %s\n", key);
 					exit(1);
 				}
-				m_confMap[key] = value;
+				//m_confMap[key] = value;
 			}
 			lua_pop(L,1);
 		}

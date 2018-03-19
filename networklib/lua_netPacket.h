@@ -8,8 +8,8 @@ extern "C"
 	#include "lauxlib.h"
 };
 
-class MsgPacket;
+class WorldPacket;
 
-void lua_pushpacket(lua_State *L, MsgPacket* packet);
+void lua_pushpacket(lua_State *L, WorldPacket* packet);
 
 #endif

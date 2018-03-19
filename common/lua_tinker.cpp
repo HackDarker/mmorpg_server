@@ -553,7 +553,7 @@ void lua_tinker::push(lua_State *L, lua_tinker::table ret)
 }
 
 template<>
-void lua_tinker::push(lua_State *L, MsgPacket* ret)
+void lua_tinker::push(lua_State *L, WorldPacket* ret)
 {
 	lua_pushpacket(L, ret);
 }

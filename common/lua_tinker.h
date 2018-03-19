@@ -4,7 +4,7 @@
 #include <new>
 #include <string.h>
 
-class MsgPacket;
+class WorldPacket;
 
 extern "C" 
 {
@@ -290,7 +290,7 @@ namespace lua_tinker
 	template<>	void push(lua_State *L, long long ret);
 	template<>	void push(lua_State *L, unsigned long long ret);
 	template<>	void push(lua_State *L, table ret);
-	template<>	void push(lua_State *L, MsgPacket* ret);
+	template<>	void push(lua_State *L, WorldPacket* ret);
 
 	// pop a value from lua stack
 	template<typename T>  

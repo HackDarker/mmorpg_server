@@ -19,11 +19,11 @@ static void lua_msgpack_error(lua_State *L, const char* fmt, ...) {
  	lua_error(L);
 }
 
-static void lua_packet_free_basic(lua_State *L, MsgPacket* packet) {
+static void lua_packet_free_basic(lua_State *L, WorldPacket* packet) {
 	delete packet;
 }
 
-static void (*lua_packet_free_func)(lua_State *L, MsgPacket* packet) = lua_packet_free_basic;
+static void (*lua_packet_free_func)(lua_State *L, WorldPacket* packet) = lua_packet_free_basic;
 
 /* --------------------------- lua packet buf op -------------------------- */
 int lua_ispacket(lua_State *L, int idx) {
@@ -47,12 +47,12 @@ int lua_ispacket(lua_State *L, int idx) {
 }
 
 mp_buf* lua_tompbuf(lua_State *L, int idx) {
-	MsgPacket* packet;
+	WorldPacket* packet;
 	if( lua_ispacket(L, idx) == 0 ) {
 		return NULL;
 	}
 
-	MsgPacket** ud = (MsgPacket**)lua_touserdata(L,idx);
+	WorldPacket** ud = (WorldPacket**)lua_touserdata(L,idx);
 	if (!ud) return NULL;
 
 	packet = *ud;
@@ -61,13 +61,13 @@ mp_buf* lua_tompbuf(lua_State *L, int idx) {
 	return packet->getMpBuf();
 }
 
-MsgPacket* lua_topacket(lua_State *L, int idx) {
-	MsgPacket* packet;
+WorldPacket* lua_topacket(lua_State *L, int idx) {
+	WorldPacket* packet;
 	if( lua_ispacket(L, idx) == 0 ) {
 		return NULL;
 	}
 
-	MsgPacket** ud = (MsgPacket**)lua_touserdata(L,idx);
+	WorldPacket** ud = (WorldPacket**)lua_touserdata(L,idx);
 	if (!ud) return NULL;
 
 	packet = *ud;
@@ -79,15 +79,15 @@ MsgPacket* lua_topacket(lua_State *L, int idx) {
 #define lua_setpacketmetatable(L, idx) luaL_getmetatable(L, MSGPACKET_META_NAME); lua_setmetatable(L, idx - 1)
 #define lua_setcpacketmetatable(L, idx) luaL_getmetatable(L, C_MSGPACKET_META_NAME); lua_setmetatable(L, idx - 1)
 
-void lua_pushpacket(lua_State *L, MsgPacket* packet) {
-	MsgPacket** ud = (MsgPacket**)lua_newuserdata(L, sizeof(MsgPacket*));
+void lua_pushpacket(lua_State *L, WorldPacket* packet) {
+	WorldPacket** ud = (WorldPacket**)lua_newuserdata(L, sizeof(WorldPacket*));
 	*ud = packet;
 	lua_setcpacketmetatable(L, -1);
 }
 
 
 static int lua_packet_free(lua_State *L) {
-	MsgPacket* packet = lua_topacket(L,1);
+	WorldPacket* packet = lua_topacket(L,1);
 	if (!packet) {
 		lua_msgpack_error(L,"Packet free needs a packet.");
 	}

@@ -12,7 +12,7 @@ static const char DB_MODULE[] = "DbModule";
 
 class ServerNetworkCallback;
 class SocketMgr;
-class MsgPacket;
+class WorldPacket;
 class CommServer;
 
 class DbModule:public IModule
@@ -27,7 +27,7 @@ public:
 	virtual int Update();
 	virtual int Stop();
 
-	void OnRecvCommserverMsg(NetID netid, MsgPacket* packet);
+	void OnRecvCommserverMsg(NetID netid, WorldPacket* packet);
 	void OnCommserverDisconnect(NetID netid);
 private:
 	bool ListenCommserver();

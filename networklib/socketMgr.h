@@ -1,5 +1,5 @@
-#ifndef _SOCKETMGR_H_
-#define _SOCKETMGR_H_
+#ifndef SOCKETMGR_H
+#define SOCKETMGR_H
 
 #include <stdio.h>
 #include <unistd.h>
@@ -20,7 +20,7 @@
 #define SOCKET_TYPE_CLIENT 1
 #define SOCKET_TYPE_INTER  2
 
-class MsgPacket;
+class WorldPacket;
 
 class IEngineNetCallback
 {
@@ -28,7 +28,7 @@ public:
 	virtual ~IEngineNetCallback(){}
 
 	virtual void OnAccept(NetID netid, std::string ip, uint16_t port) = 0;
-	virtual void OnRecv(NetID netid, MsgPacket* packet) = 0;
+	virtual void OnRecv(NetID netid, WorldPacket* packet) = 0;
 	virtual void OnDisconnect(NetID netid) = 0;
 };
 
@@ -66,7 +66,7 @@ public:
 	int ModSocketEvent(Socket* s, int w);
 	int SetNoblock(int fd);
 
-	void SendPacket(int fd,MsgPacket* packet);
+	void SendPacket(int fd,WorldPacket* packet);
 	void RegisterCallback(uint16_t type,IEngineNetCallback* call_back);
 private:
 	SocketMgr();

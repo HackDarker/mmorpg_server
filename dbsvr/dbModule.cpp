@@ -28,7 +28,7 @@ public:
 		m_dbsvr->m_commserver_list[netid] = new CommServer();
 		m_dbsvr->m_commserver_list[netid]->SetServerInfo(netid,ip,port,m_dbsvr->m_current_time);
 	}
-	virtual void OnRecv(NetID netid, MsgPacket* netPacket)
+	virtual void OnRecv(NetID netid, WorldPacket* netPacket)
 	{
 		printf("OnRecv=============================%d\n", netid);
 		if (netid >= MAX_COMMSERVER_NUM)
@@ -111,7 +111,7 @@ bool DbModule::ListenCommserver()
 	return true;
 }
 
-void DbModule::OnRecvCommserverMsg(NetID netid, MsgPacket* packet)
+void DbModule::OnRecvCommserverMsg(NetID netid, WorldPacket* packet)
 {
 	printf("OnRecvCommserverMsg=================from netid %u===opcode is %u size is %u===addr%p==\n", netid,packet->GetOpcode(),packet->Size(),packet);
 	if (!m_commserver_list[netid])

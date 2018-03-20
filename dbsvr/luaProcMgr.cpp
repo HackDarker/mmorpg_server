@@ -69,7 +69,7 @@ void LuaProcThread::HandlePacket(WorldPacket& packet)
 	uint16_t opcode = packet.GetOpcode();
 	size_t size   = packet.size();
 	WorldPacket data(opcode,size);
-	data.ReadPacket(packet);
+	packet.ReadPacket(data);
 
 
 	m_engine->ProcQuery(33333, 44444, &data);

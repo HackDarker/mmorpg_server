@@ -17,9 +17,9 @@
 #endif
 
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+// #ifdef __cplusplus
+// extern "C" {
+// #endif
 
 // fix me
 #define MP_BUF_DEFAULT_SIZE 32
@@ -300,8 +300,8 @@ enum mp_type {
 	mp_neglow = 0xe0,
 };
 
-#ifdef __cplusplus
-}
-#endif
+// #ifdef __cplusplus
+// }
+// #endif
 
 #endif

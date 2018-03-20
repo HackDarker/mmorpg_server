@@ -67,7 +67,7 @@ void LuaProcThread::HandlePacket(WorldPacket& packet)
 {	
 	printf("111111111111111111111HandlePacket11111111111111\n");
 	uint16_t opcode = packet.GetOpcode();
-	uint16_t size   = packet.size();
+	size_t size   = packet.size();
 	WorldPacket data(opcode,size);
 	data.ReadPacket(packet);
 

@@ -1,21 +1,18 @@
 
-test:condition.o mutex.o thread.o threadpool.o test.o 
-	g++ -g -o test condition.o mutex.o thread.o threadpool.o test.o -lpthread
+FLAGS=-c -Wall -O2 -g
 
-condition.o:./condition.cpp
-	g++ -c ./condition.cpp
-
-mutex.o:./mutex.cpp
-	g++ -c ./mutex.cpp
-
-thread.o:./thread.cpp
-	g++ -c ./thread.cpp
-
-threadpool.o:./threadpool.cpp
-	g++ -c ./threadpool.cpp
-
-test.o:test.cpp 
-	g++ -c test.cpp
+LIBS=../3rd/liblua.a
 	
+SRCDIRS=. ../common ../threadlib ../networklib
+
+SRCS=$(foreach dir,$(SRCDIRS),$(wildcard $(dir)/*.cpp))
+OBJS=$(SRCS:.cpp=.o)
+PROG=./login
+
+$(PROG): $(OBJS)
+	g++ -g $(OBJS) -o $(PROG) $(LIBS) -lpthread -ldl
+.cpp.o:
+	g++ $(FLAGS) -fPIC $< -o $@
+
 clean:
-	rm test test.o mutex.o condition.o threadpool.o
+	rm -rf $(OBJS) $(PROG) $(PROG).core

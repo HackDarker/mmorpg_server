@@ -11,7 +11,7 @@ static const char LOGINWAY_MODULE[] = "LoginModule";
 class ServerNetworkCallback;
 class ServerInternalNetCallback;
 class SocketMgr;
-class MsgPacket;
+class WorldPacket;
 
 class LoginModule:public IModule
 {
@@ -26,8 +26,8 @@ public:
 	virtual int Update();
 	virtual int Stop();
 
-	void OnRecvGateWayMsg(NetID netid, const MsgPacket* packet);
-	void OnOtherServerDisconnect(NetID netid);
+	void OnRecvGateWayMsg(NetID netid, const WorldPacket* packet);
+	void OnGateWayDisconnect(NetID netid);
 private:
 	bool ListenForGateway();
 	void OnRegisterGateway(const char *data);
@@ -39,7 +39,7 @@ private:
 	
 	struct GateWay 
 	{
-		GateWay():netid(-1), index(-1), last_active_time(0), has_checked(false), ip(0){}
+		GateWay():netid(-1), index(-1), last_active_time(0), has_checked(false), ip(""){}
 		NetID	 netid;
 		int		 index;
 		std::string	 ip;
@@ -50,7 +50,7 @@ private:
 		{
 			netid = -1;
 			index = -1;
-			ip    = 0;
+			ip    = "";
 			port  = 0;
 			last_active_time = 0;
 			has_checked = false;

@@ -5,6 +5,8 @@
 #include "../common/common.h"
 #include <string>
 
+class IModule;
+
 class GameServer
 {
 public:

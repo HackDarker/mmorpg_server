@@ -1,5 +1,6 @@
 #include "../common/util_time.h"
 #include "../common/imodule.h"
+#include "../networklib/socketMgr.h"
 #include "loginModule.h"
 
 class ServerNetworkCallback : public IEngineNetCallback
@@ -22,9 +23,9 @@ public:
 		m_loginsvr->m_gateway_list[netid].netid = netid;
 		m_loginsvr->m_gateway_list[netid].ip   = ip;
 		m_loginsvr->m_gateway_list[netid].port = port;
-		m_loginsvr->m_gateway_list[netid].last_active_time = m_gateway->m_current_time;
+		m_loginsvr->m_gateway_list[netid].last_active_time = m_loginsvr->m_current_time;
 	}
-	virtual void OnRecv(NetID netid, const MsgPacket* netPacket)
+	virtual void OnRecv(NetID netid, const WorldPacket* netPacket)
 	{
 		printf("Loginsvr OnRecv from netid ===========%u\n",netid);
 		if (netid < m_loginsvr->m_gateway_size)
@@ -53,7 +54,7 @@ public:
 	{
 		printf("Internal Network OnAccept netid:%d\nIP:%s port:%u", netid,ip.c_str(),port);
 	}
-	virtual void OnRecv(NetID netid, const MsgPacket* netPacket)
+	virtual void OnRecv(NetID netid, const WorldPacket* netPacket)
 	{
 		printf("ServerInternalNetCallback OnRecv======%s\n", netid);
 
@@ -72,7 +73,7 @@ m_current_time(0)
 {
 	m_network_callback = new ServerNetworkCallback(this);
 	m_internal_network_callback = new ServerInternalNetCallback(this);
-	m_network = SocketMgr::instance();
+	m_network = SocketMgr::Instance();
 }
 
 LoginModule::~LoginModule()
@@ -92,7 +93,7 @@ int LoginModule::Start()
 	m_network->RegisterCallback(SOCKET_TYPE_CLIENT,m_network_callback);
 	m_network->RegisterCallback(SOCKET_TYPE_INTER,m_internal_network_callback);
 
-	if (!ListenForGateWay())
+	if (!ListenForGateway())
 	{
 		return false;
 	}
@@ -111,9 +112,9 @@ int LoginModule::Stop()
 	return true;
 }
 
-bool LoginModule::ListenForGateWay()
+bool LoginModule::ListenForGateway()
 {
-	std:string host_ip = "127.0.0.1";
+	std::string host_ip = "127.0.0.1";
 	uint16_t listen_port = 8001;
 	int ret = m_network->Listen(host_ip.c_str(),listen_port);
 	if (ret < 0)
@@ -136,7 +137,7 @@ void LoginModule::ResizeGateWayList(uint32_t size)
 	m_gateway_size = size;
 }
 
-void LoginModule::OnRecvGateWayMsg(NetID netid, const MsgPacket* packet)
+void LoginModule::OnRecvGateWayMsg(NetID netid, const WorldPacket* packet)
 {
 	printf("OnRecvGateWayMsg=================from netid %u\n", netid);
 }

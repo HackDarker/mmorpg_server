@@ -1,4 +1,5 @@
 #include "gameServer.h"
+#include "../common/imodule.h"
 #include "../threadlib/threadpool.h"
 #include "../networklib/socketMgr.h"
 

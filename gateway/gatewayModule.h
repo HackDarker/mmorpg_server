@@ -11,7 +11,7 @@ static const char GATEWAY_MODULE[] = "GatewayModule";
 class ServerNetworkCallback;
 class ServerInternalNetCallback;
 class SocketMgr;
-class MsgPacket;
+class WorldPacket;
 
 class GatewayModule: public IModule
 {
@@ -26,14 +26,14 @@ public:
 	virtual int Update();
 	virtual int Stop();
 
-	void OnRecvUserMsg(NetID netid, const MsgPacket* packet);
+	void OnRecvUserMsg(NetID netid, const WorldPacket* packet);
 	void OnUserDisconnect(NetID netid);
 private:
 	bool ConnectToLoginServer();
 	bool ListenForUser();
 
 	bool RegisterToLogin();
-	void OnRecvLoginServerMsg(const MsgPacket* packet);
+	void OnRecvLoginServerMsg(const WorldPacket* packet);
 
 	SocketMgr*	m_network;
 	ServerNetworkCallback* m_network_callback;
@@ -44,7 +44,7 @@ private:
 	
 	struct User 
 	{
-		User():netid(-1), last_active_time(0), has_checked(false), ip(0){}
+		User():netid(-1), last_active_time(0), has_checked(false), ip(""){}
 		NetID	netid;
 		uint32_t last_active_time;
 		bool	 has_checked;
@@ -54,7 +54,7 @@ private:
 			netid = -1;
 			last_active_time = 0;
 			has_checked = false;
-			ip = 0;
+			ip = "";
 		}
 	};
 	User*       m_user_list;

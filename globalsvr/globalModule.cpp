@@ -1,5 +1,6 @@
 #include "../common/util_time.h"
 #include "../common/imodule.h"
+#include "../networklib/socketMgr.h"
 #include "globalModule.h"
 
 class ServerInternalNetCallback : public IEngineNetCallback
@@ -22,7 +23,7 @@ public:
 		m_globalsvr->m_commserver_list[netid].netid = netid;
 		m_globalsvr->m_commserver_list[netid].last_ping = m_globalsvr->m_current_time;
 	}
-	virtual void OnRecv(NetID netid, const WorldPacket* netPacket)
+	virtual void OnRecv(NetID netid, WorldPacket* netPacket)
 	{
 		printf("Loginsvr OnRecv from netid ===========%u\n",netid);
 		if (netid < m_globalsvr->m_commserver_size)
@@ -44,7 +45,7 @@ private:
 
 GlobalModule::GlobalModule()
 {
-	m_network = SocketMgr::instance();
+	m_network = SocketMgr::Instance();
 	m_internal_network_callback = new ServerInternalNetCallback(this);
 	m_current_time = 0;
 }
@@ -85,7 +86,7 @@ int GlobalModule::Stop()
 
 bool GlobalModule::ListenForCommserver()
 {
-	std:string host_ip = "0.0.0.0";
+	std::string host_ip = "0.0.0.0";
 	uint16_t listen_port = 8001;
 	int ret = m_network->Listen(host_ip.c_str(),listen_port);
 	if (ret < 0)
@@ -101,7 +102,7 @@ void GlobalModule::ResizeCommserverList(uint32_t size)
 	if (m_commserver_size >= size) return;
 	
 	m_commserver_list = (Commserver *)realloc(m_commserver_list, size * sizeof(Commserver));
-	for (uint32_t i = m_commserver_list; i < size; i++)
+	for (uint32_t i = m_commserver_size; i < size; i++)
 	{
 		m_commserver_list[i].Reset();
 	}

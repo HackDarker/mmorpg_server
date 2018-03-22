@@ -17,7 +17,7 @@ public:
 		{
 			while (netid >= m_loginsvr->m_gateway_size)
 			{
-				m_loginsvr->ResizeGateWayList(m_gateway->m_gateway_size * 2);
+				m_loginsvr->ResizeGateWayList(m_loginsvr->m_gateway_size * 2);
 			}
 		}
 		m_loginsvr->m_gateway_list[netid].netid = netid;
@@ -25,7 +25,7 @@ public:
 		m_loginsvr->m_gateway_list[netid].port = port;
 		m_loginsvr->m_gateway_list[netid].last_active_time = m_loginsvr->m_current_time;
 	}
-	virtual void OnRecv(NetID netid, const WorldPacket* netPacket)
+	virtual void OnRecv(NetID netid,WorldPacket* netPacket)
 	{
 		printf("Loginsvr OnRecv from netid ===========%u\n",netid);
 		if (netid < m_loginsvr->m_gateway_size)
@@ -54,7 +54,7 @@ public:
 	{
 		printf("Internal Network OnAccept netid:%d\nIP:%s port:%u", netid,ip.c_str(),port);
 	}
-	virtual void OnRecv(NetID netid, const WorldPacket* netPacket)
+	virtual void OnRecv(NetID netid, WorldPacket* netPacket)
 	{
 		printf("ServerInternalNetCallback OnRecv======%s\n", netid);
 

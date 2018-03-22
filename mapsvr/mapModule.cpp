@@ -1,21 +1,22 @@
 
 #include "../common/util_time.h"
-#include "../common/networklib/socketMgr.h"
+#include "../common/imodule.h"
+#include "../networklib/socketMgr.h"
 #include "mapModule.h"
 
 class ServerInternalNetCallback : public IEngineNetCallback
 {
 public:
-	ServerInternalNetCallback(MapModule *m_mapsvr):m_mapsvr(mapsvr){}
+	ServerInternalNetCallback(MapModule* mapsvr):m_mapsvr(mapsvr){}
 	virtual ~ServerInternalNetCallback(){}
 	virtual void OnAccept(NetID netid, std::string ip, uint16_t port)
 	{
 		printf("Internal Network OnAccept netid:%u.%s,%u", netid,ip.c_str(),port);
 	}
-	virtual void OnRecv(NetID netid, const WorldPacket* packet)
+	virtual void OnRecv(NetID netid, WorldPacket* packet)
 	{
-		if (m_mapsvr->m_login_server_id == netid){
-			return m_gateway->OnRecvLoginServerMsg(packet);
+		if (m_mapsvr->m_db_server_id == netid){
+			return m_mapsvr->OnRecvDbServerMsg(packet);
 		}else if (m_mapsvr->m_global_server_id == netid){
 			return m_mapsvr->OnRecvGlobalServerMsg(packet);
 		}else{
@@ -27,7 +28,7 @@ public:
 		printf("OnDisconnect=================%u\n", netid);
 	}
 private:
-	GatewayModule *m_mapsvr;
+	MapModule *m_mapsvr;
 };
 
 MapModule::MapModule()
@@ -128,12 +129,12 @@ bool MapModule::RegisterToDatabase()
 
 void MapModule::OnRecvGlobalServerMsg(const WorldPacket* packet)
 {
-	printf("OnRecvGlobalServerMsg=====id==type===size===%u\n", netid,packet->GetOpcode();packet->Size());
+	printf("OnRecvGlobalServerMsg=====id==type===size===%u\n", packet->GetOpcode(),packet->size());
 }
 
-void MapModule::OnRecvLoginServerMsg(const WorldPacket* packet)
+void MapModule::OnRecvDbServerMsg(const WorldPacket* packet)
 {
-	printf("OnRecvLoginServerMsg=====id==type===size===%u\n", netid,packet->GetOpcode();packet->Size());
+	printf("OnRecvLoginServerMsg=====id==type===size===%u\n",packet->GetOpcode(),packet->size());
 }
 
 

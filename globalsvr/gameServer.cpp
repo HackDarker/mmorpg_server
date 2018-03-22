@@ -1,8 +1,14 @@
 #include "gameServer.h"
+#include "../common/imodule.h"
 #include "../threadlib/threadpool.h"
 #include "../networklib/socketMgr.h"
 
 volatile bool g_running = true;
+
+GameServer::GameServer()
+{
+
+}
 
 GameServer::~GameServer()
 {
@@ -48,7 +54,7 @@ void GameServer::Loop()
 void GameServer::Stop()
 {
 	ThreadPool::Instance()->Shutdown();
-	SocketMgr::Instanece()->CloseAll();
+	SocketMgr::Instance()->CloseAll();
 	m_module->Stop();
 }
 

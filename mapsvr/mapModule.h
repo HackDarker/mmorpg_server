@@ -1,5 +1,5 @@
-#ifndef GATEWAYMODULE_H
-#define GATEWAYMODULE_H
+#ifndef MAPMODULE_H
+#define MAPMODULE_H
 
 #include "../common/common.h"
 #include "../common/imodule.h"
@@ -17,7 +17,7 @@ class MapModule: public IModule
 	friend class ServerInternalNetCallback;
 public:
 	MapModule();
-	~MapModule();
+	virtual ~MapModule();
 
 	virtual int Init();
 	virtual int Start();
@@ -34,13 +34,13 @@ private:
 	bool RegisterToDatabase();
 
 	void OnRecvGlobalServerMsg(const WorldPacket* packet);
-	void OnRecvLoginServerMsg(const WorldPacket* packet);
+	void OnRecvDbServerMsg(const WorldPacket* packet);
 	
 	SocketMgr*	m_network;
 	ServerInternalNetCallback* m_internal_network_callback;
 	uint32_t		m_current_time;
 	NetID			m_global_server_id;
-	NetID           m_db_server_id;
+	NetID                   m_db_server_id;
 };
 
 #endif

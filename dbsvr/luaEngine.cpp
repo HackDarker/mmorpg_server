@@ -94,7 +94,7 @@ static bool ScanDir(const std::string& strdir, std::list<std::string>& luaFiles)
 
 LuaEngine::LuaEngine()
 {
-	L = lua_open();
+	L = luaL_newstate();
 }
 
 LuaEngine::~LuaEngine()

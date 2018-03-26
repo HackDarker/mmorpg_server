@@ -1137,7 +1137,7 @@ namespace lua_tinker
 
 		//t = {__name = name,__index = meta_get,__newindex = meta_set,__gc = destroyer}
 		// global {name = t},_G[name] = t
-		lua_setglobal(L,name)
+		lua_setglobal(L,name);
 	}
 
 	// Tinker Class Inheritence

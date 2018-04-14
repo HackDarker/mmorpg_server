@@ -169,7 +169,7 @@ static int lua_mp_buf_get_size(lua_State *L) {
 }
 
 /* ---------------------------------------------------------------------------- */
-static const struct luaL_reg thislib[] = {
+static const struct luaL_Reg thislib[] = {
 	{"getOpcode", lua_mp_buf_get_opcode},
 	{"setOpcode", lua_mp_buf_set_opcode},
 	{"getContents",lua_mp_buf_get_pbdata},

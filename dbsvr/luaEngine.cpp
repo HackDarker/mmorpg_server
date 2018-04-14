@@ -136,10 +136,10 @@ bool LuaEngine::LoadScripts()
 	luaL_openlibs(L);
 	my_lua_openlibs(L);
 
-	lua_tinker::dofile(L, "/home/mmorpg_sever/luaScripts/dbscripts/test.lua");
-	lua_tinker::dofile(L, "/home/mmorpg_sever/luaScripts/dbscripts/loader.lua");
+	lua_tinker::dofile(L, "/home/mmorpg_server/luaScripts/dbscripts/test.lua");
+	lua_tinker::dofile(L, "/home/mmorpg_server/luaScripts/dbscripts/loader.lua");
 	LoadLuaFiles();
-	lua_tinker::dofile(L, "/home/mmorpg_sever/luaScripts/dbscripts/interface.lua");
+	lua_tinker::dofile(L, "/home/mmorpg_server/luaScripts/dbscripts/interface.lua");
 
 	return true;
 }

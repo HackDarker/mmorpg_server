@@ -178,7 +178,7 @@ static const struct luaL_Reg thislib[] = {
 };
 
 int luaopen_msgpack(lua_State *L) {
-    luaL_requiref(L, MP_LUA_LIB_NAME, thislib,1);
+    luaL_newlib(L, thislib);
 	lua_reg_packet_meta(L);
 	lua_reg_cpacket_meta(L);
 

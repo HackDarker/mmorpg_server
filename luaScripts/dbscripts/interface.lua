@@ -1,5 +1,3 @@
-local pb = require 'protobuf'
-
 local dbOpCodes = dbOpCodes
 local dbPacketHandler = dbPacketHandler
 local msgpack  = msgpack

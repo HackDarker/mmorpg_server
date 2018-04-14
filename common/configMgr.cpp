@@ -27,8 +27,7 @@ bool ConfigMgr::LoadConfig(const char* filename)
 		local function getenv(name) return assert(os.getenv(name), [[os.getenv() failed: ]] .. name) end\n\
 		local sep = package.config:sub(1,1)\n\
 		local current_path = [[.]]..sep\n\
-		print("11111111111111111111111111")\n\
-        print(current_path)\n\
+			print("11111111111111111111111111",current_path)\n\
 		local function include(filename)\n\
 			local last_path = current_path\n\
 			local path, name = filename:match([[(.*]]..sep..[[)(.*)$]])\n\
@@ -53,7 +52,7 @@ bool ConfigMgr::LoadConfig(const char* filename)
 			print("666666666666666666666666666666666")\n\
 			print(type(code))\n\
 			f:close()\n\
-			print("777777777777777777777777777777777",[[@]]..filename,[[t]])\n\
+			print("777777777777777777777777777777777",[[@]]..filename,)\n\
 			assert(load(code,[[@]]..filename,[[t]],result))()\n\
 			current_path = last_path\n\
 		end\n\

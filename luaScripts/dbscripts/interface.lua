@@ -1,6 +1,6 @@
 local dbOpCodes = dbOpCodes
 local dbPacketHandler = dbPacketHandler
-local msgpack  = msgpack
+local msgpack  = require("msgpack")
 
 -----------------------------------------------------------------------------------------------------------------------------
 --处理查询包

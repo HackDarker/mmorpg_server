@@ -50,6 +50,7 @@ bool ConfigMgr::LoadConfig(const char* filename)
 			print(type(code))\n\
 			f:close()\n\
 			print([[t]])\n\
+			print([[@]]..filename)\n\
 			assert(load(code,[[@]]..filename,[[t]],result))()\n\
 			current_path = last_path\n\
 		end\n\

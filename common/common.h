@@ -19,4 +19,10 @@ typedef uint16_t NetID;
 
 #define INVAILD_SOCKETID 0
 
+#define SERVER_TYPE_GATEWAY  1
+#define SERVER_TYPE_DB       2
+#define SERVER_TYPE_GLOBAL   3
+#define SERVER_TYPE_MAP      4
+#define SERVER_TYPE_LOGIN    5
+
 #endif

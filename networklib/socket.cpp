@@ -1,3 +1,4 @@
+#include "../commom/common.h"
 #include "socketMgr.h"
 #include "socket.h"
 #include "cmsgpack.h"
@@ -45,22 +46,32 @@ void Socket::OnAccept()
 	struct sockaddr_in clientAddr;
 	memset(&clientAddr,0,sizeof(clientAddr));
 
+	int server_type = SocketMgr::Instance()->GetInt("server_type",0);
 	int socket_type = SOCKET_TYPE_INTER;
+	if (server_type == SERVER_TYPE_GATEWAY){
+		socket_type = SOCKET_TYPE_CLIENT;
+	}
+
 	while(true)
 	{
 		new_fd = accept(m_fd, (sockaddr*)&clientAddr, (socklen_t*)&len);
-		if(new_fd == -1)
-		{
+		if(new_fd == -1){
 			if(errno == EINTR) continue;
 			return;
 		}
 
-		Socket* socketPtr = new Socket(new_fd,SOCKET_TYPE_CLIENT);
+		Socket* socketPtr = new Socket(new_fd,socket_type);
 		SocketMgr::Instance()->AddSocket(socketPtr);
 
 		char* ip = inet_ntoa(clientAddr.sin_addr);
 		uint16_t port = clientAddr.sin_port;
-		SocketMgr::Instance()->m_net_callback->OnAccept(socketPtr->GetId(),ip,port);
+
+		if (socket_type == SOCKET_TYPE_CLIENT){
+			SocketMgr::Instance()->m_net_callback->OnAccept(socketPtr->GetId(),ip,port);
+		}else{
+			SocketMgr::Instance()->m_inter_net_callback->OnAccept(socketPtr->GetId(),ip,port);
+		}
+		
 	}
 }
 

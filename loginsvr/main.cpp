@@ -1,3 +1,4 @@
+#include "../common/configMgr.h"
 #include "gameServer.h"
 #include "loginModule.h"
 

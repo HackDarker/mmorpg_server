@@ -1,4 +1,5 @@
 #include "../common/common.h"
+#include "../common/configMgr.h"
 #include "socketMgr.h"
 #include "socket.h"
 #include "cmsgpack.h"
@@ -46,7 +47,7 @@ void Socket::OnAccept()
 	struct sockaddr_in clientAddr;
 	memset(&clientAddr,0,sizeof(clientAddr));
 
-	int server_type = SocketMgr::Instance()->GetInt("server_type",0);
+	int server_type = ConfigMgr::Instance()->GetInt("server_type",0);
 	int socket_type = SOCKET_TYPE_INTER;
 	if (server_type == SERVER_TYPE_GATEWAY){
 		socket_type = SOCKET_TYPE_CLIENT;

@@ -71,7 +71,7 @@ int MapModule::Update()
 {
 	m_current_time = getFrameTime();
 
-	printf("now time is %u\n", m_current_time);
+//	printf("now time is %u\n", m_current_time);
 	
 	return true;
 }
@@ -102,7 +102,7 @@ bool MapModule::ConnectToGlobalServer()
 bool MapModule::ConnectToDbServer()
 {
 	std::string db_server_ip = "127.0.0.1";
-	uint16_t db_server_port  = 8001;
+	uint16_t db_server_port  = 8002;
 
 	int netId = m_network->Connect(db_server_ip.c_str(), db_server_port);
 	if (netId < 0)

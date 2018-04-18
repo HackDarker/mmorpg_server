@@ -28,6 +28,7 @@ public:
 	void OnCommserverDisconnect(NetID netid);
 private:
 	bool ListenForCommserver();
+	bool ConnectToDbServer();
 	void OnRegisterCommserver(const WorldPacket* packet);
 
 	uint32_t	m_current_time;

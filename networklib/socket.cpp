@@ -45,6 +45,7 @@ void Socket::OnAccept()
 	struct sockaddr_in clientAddr;
 	memset(&clientAddr,0,sizeof(clientAddr));
 
+	int socket_type = SOCKET_TYPE_INTER;
 	while(true)
 	{
 		new_fd = accept(m_fd, (sockaddr*)&clientAddr, (socklen_t*)&len);

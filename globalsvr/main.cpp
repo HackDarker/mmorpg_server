@@ -2,7 +2,7 @@
 #include "gameServer.h"
 #include "globalModule.h"
 
-int main(int argc, char const *argv[])
+int main(int argc, char *argv[])
 {
 	char* config_file = "./config";
 	if (argc > 1) {

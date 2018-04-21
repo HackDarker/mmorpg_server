@@ -59,7 +59,7 @@ DbModule::DbModule()
 
 DbModule::~DbModule()
 {
-	delete m_network_callback;
+	delete m_internal_network_callback;
 }
 
 int DbModule::Init()

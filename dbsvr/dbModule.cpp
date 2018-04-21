@@ -52,8 +52,8 @@ private:
 DbModule::DbModule()
 {	
 	m_current_time = 0;
-	m_internal_network_callback = new ServerInternalNetCallback(this);
 	m_network = SocketMgr::Instance();
+	m_internal_network_callback = new ServerInternalNetCallback(this);
 	memset(m_commserver_list,0,sizeof(void *) * MAX_COMMSERVER_NUM);
 }
 

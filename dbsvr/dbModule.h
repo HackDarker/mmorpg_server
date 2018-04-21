@@ -10,7 +10,7 @@
 
 static const char DB_MODULE[] = "DbModule";
 
-class ServerNetworkCallback;
+class ServerInternalNetCallback;
 class SocketMgr;
 class WorldPacket;
 class CommServer;

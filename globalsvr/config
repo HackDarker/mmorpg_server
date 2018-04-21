@@ -1,0 +1,4 @@
+server_name = "globalsvr"
+server_type = 3
+listen_port = 8001
+

@@ -1,0 +1,4 @@
+server_name = "dbsvr"
+server_type = 2
+listen_port = 8001
+

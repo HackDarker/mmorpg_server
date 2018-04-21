@@ -5,11 +5,11 @@
 #include "commonServer.h"
 #include <string>
 
-class ServerNetworkCallback : public IEngineNetCallback
+class ServerInternalNetCallback : public IEngineNetCallback
 {
 public:
-	ServerNetworkCallback(DbModule *dbsvr):m_dbsvr(dbsvr),m_cur_connect_num(0){}
-	virtual ~ServerNetworkCallback(){}
+	ServerInternalNetCallback(DbModule *dbsvr):m_dbsvr(dbsvr),m_cur_connect_num(0){}
+	virtual ~ServerInternalNetCallback(){}
 	virtual void OnAccept(NetID netid, std::string ip, uint16_t port)
 	{
 		m_cur_connect_num++;
@@ -52,7 +52,7 @@ private:
 DbModule::DbModule()
 {	
 	m_current_time = 0;
-	m_network_callback = new ServerNetworkCallback(this);
+	m_internal_network_callback = new ServerInternalNetCallback(this);
 	m_network = SocketMgr::Instance();
 	memset(m_commserver_list,0,sizeof(void *) * MAX_COMMSERVER_NUM);
 }
@@ -69,7 +69,7 @@ int DbModule::Init()
 
 int DbModule::Start()
 {
-	m_network->RegisterCallback(SOCKET_TYPE_CLIENT,m_network_callback);
+	m_network->RegisterCallback(SOCKET_TYPE_INTER,m_internal_network_callback);
 
 	if (!ListenCommserver())
 	{

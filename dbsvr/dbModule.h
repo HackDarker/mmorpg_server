@@ -35,7 +35,7 @@ private:
 
 	uint32_t	m_current_time;
 	SocketMgr*	m_network;
-	ServerNetworkCallback* m_network_callback;
+	ServerInternalNetCallback* m_internal_network_callback;
 	
 	CommServer*	m_commserver_list[MAX_COMMSERVER_NUM];
 };

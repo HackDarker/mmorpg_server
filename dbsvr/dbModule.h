@@ -17,7 +17,7 @@ class CommServer;
 
 class DbModule:public IModule
 {
-	friend class ServerNetworkCallback;
+	friend class ServerInternalNetCallback;
 public:
 	DbModule();
 	~DbModule();

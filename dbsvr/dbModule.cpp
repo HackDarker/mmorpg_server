@@ -110,22 +110,6 @@ bool DbModule::ListenCommserver()
 	return true;
 }
 
-bool GlobalModule::ConnectToDbServer()
-{
-	std::string db_server_ip = "127.0.0.1";
-	uint16_t db_server_port  = 8002;
-
-	int ret = m_network->Connect(db_server_ip.c_str(), db_server_port);
-	if (ret < 0)
-	{
-		printf("Connect to DBServer[%s:%d] Fail!==ret==%d", db_server_ip.c_str(),db_server_port,ret);
-		return false;
-	}
-	printf("Connect to DBServer[%s:%d] suc.==ret===%d", db_server_ip.c_str(), db_server_port,ret);
-
-	return true;
-}
-
 void DbModule::OnRecvCommserverMsg(NetID netid, WorldPacket* packet)
 {
 	printf("OnRecvCommserverMsg=================from netid %u===opcode is %u size is %u===addr%p==\n", netid,packet->GetOpcode(),packet->size(),packet);

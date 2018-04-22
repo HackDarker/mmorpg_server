@@ -29,8 +29,9 @@ public:
 	void OnRecvUserMsg(NetID netid, const WorldPacket* packet);
 	void OnUserDisconnect(NetID netid);
 private:
-	bool ConnectToLoginServer();
 	bool ListenForUser();
+	bool ConnectToLoginServer();
+	bool ConnectToGlobalServer();
 
 	bool RegisterToLogin();
 	void OnRecvLoginServerMsg(const WorldPacket* packet);

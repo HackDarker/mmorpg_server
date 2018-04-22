@@ -3,11 +3,11 @@
 #include "../networklib/socketMgr.h"
 #include "loginModule.h"
 
-class ServerNetworkCallback : public IEngineNetCallback
+class ServerInternalNetCallback : public IEngineNetCallback
 {
 public:
-	ServerNetworkCallback(LoginModule *loginsvr):m_loginsvr(loginsvr),  m_cur_connect_num(0){}
-	virtual ~ServerNetworkCallback(){}
+	ServerInternalNetCallback(LoginModule *loginsvr):m_loginsvr(loginsvr),  m_cur_connect_num(0){}
+	virtual ~ServerInternalNetCallback(){}
 	virtual void OnAccept(NetID netid, std::string ip, uint16_t port)
 	{
 		m_cur_connect_num++;
@@ -45,40 +45,15 @@ private:
 	int m_cur_connect_num;
 };
 
-class ServerInternalNetCallback : public IEngineNetCallback
-{
-public:
-	ServerInternalNetCallback(LoginModule *loginsvr):m_loginsvr(loginsvr){}
-	virtual ~ServerInternalNetCallback(){}
-	virtual void OnAccept(NetID netid, std::string ip, uint16_t port)
-	{
-		printf("Internal Network OnAccept netid:%d\nIP:%s port:%u", netid,ip.c_str(),port);
-	}
-	virtual void OnRecv(NetID netid, WorldPacket* netPacket)
-	{
-		printf("ServerInternalNetCallback OnRecv======%s\n", netid);
-
-	}
-	virtual void OnDisconnect(NetID netid)
-	{
-		printf(" ServerInternalNetCallback OnDisconnect===========\n", netid);
-	}
-private:
-	LoginModule *m_loginsvr;
-};
-
 LoginModule::LoginModule()
-:m_network(0), m_network_callback(0), m_internal_network_callback(0),
-m_current_time(0)
-{
-	m_network_callback = new ServerNetworkCallback(this);
-	m_internal_network_callback = new ServerInternalNetCallback(this);
+{	
+	m_current_time = 0;
 	m_network = SocketMgr::Instance();
+	m_internal_network_callback = new ServerInternalNetCallback(this);
 }
 
 LoginModule::~LoginModule()
 {
-	delete m_network_callback;
 	delete m_internal_network_callback;
 	free(m_gateway_list);
 }
@@ -90,11 +65,13 @@ int LoginModule::Init()
 
 int LoginModule::Start()
 {
-	m_network->RegisterCallback(SOCKET_TYPE_CLIENT,m_network_callback);
 	m_network->RegisterCallback(SOCKET_TYPE_INTER,m_internal_network_callback);
 
-	if (!ListenForGateway())
-	{
+	if (!ListenForGateway()){
+		return false;
+	}
+
+	if (!ConnectToDbServer()){
 		return false;
 	}
 
@@ -123,6 +100,22 @@ bool LoginModule::ListenForGateway()
 		return false;
 	}
 	printf("ListenForGateWay begin=======on====port:%u\n", listen_port);
+}
+
+bool LoginModule::ConnectToDbServer()
+{
+	std::string db_server_ip = "127.0.0.1";
+	uint16_t db_server_port  = 8002;
+
+	int ret = m_network->Connect(db_server_ip.c_str(), db_server_port);
+	if (ret < 0)
+	{
+		printf("Connect to DBServer[%s:%d] Fail!==ret==%d", db_server_ip.c_str(),db_server_port,ret);
+		return false;
+	}
+	printf("Connect to DBServer[%s:%d] suc.==ret===%d", db_server_ip.c_str(), db_server_port,ret);
+
+	return true;
 }
 
 void LoginModule::ResizeGateWayList(uint32_t size)

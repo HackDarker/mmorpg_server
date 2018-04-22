@@ -104,13 +104,15 @@ int GatewayModule::Start()
 	m_network->RegisterCallback(SOCKET_TYPE_CLIENT,m_network_callback);
 	m_network->RegisterCallback(SOCKET_TYPE_INTER,m_internal_network_callback);
 
-	if (!ConnectToLoginServer())
-	{
+	if (!ConnectToLoginServer()){
 		return false;
 	}
 
-	if (!ListenForUser())
-	{
+	if (!ConnectToGlobalServer()){
+		return false;
+	}
+
+	if (!ListenForUser()){
 		return false;
 	}
 
@@ -137,12 +139,26 @@ bool GatewayModule::ConnectToLoginServer()
 	uint16_t login_server_port  = 8001;
 
 	int ret = m_network->Connect(login_server_ip.c_str(), login_server_port);
-	if (ret < 0)
-	{
+	if (ret < 0){
 		printf("Connect to LoginServer[%s:%d] Fail!==ret==%d", login_server_ip.c_str(),login_server_port,ret);
 		return false;
 	}
 	printf("Connect to LoginServer[%s:%d] suc.==ret===%d", login_server_ip.c_str(), login_server_port,ret);
+
+	return true;
+}
+
+bool GatewayModule::ConnectToGlobalServer()
+{
+	std::string global_server_ip = "127.0.0.1";
+	uint16_t global_server_port  = 8002;
+
+	int ret = m_network->Connect(global_server_ip.c_str(), global_server_port);
+	if (ret < 0){
+		printf("Connect to LoginServer[%s:%d] Fail!==ret==%d", global_server_ip.c_str(),global_server_port,ret);
+		return false;
+	}
+	printf("Connect to LoginServer[%s:%d] suc.==ret===%d", global_server_ip.c_str(), global_server_port,ret);
 
 	return true;
 }

@@ -8,7 +8,6 @@
 
 static const char LOGINWAY_MODULE[] = "LoginModule";
 
-class ServerNetworkCallback;
 class ServerInternalNetCallback;
 class SocketMgr;
 class WorldPacket;
@@ -16,7 +15,6 @@ class WorldPacket;
 class LoginModule:public IModule
 {
 	friend class ServerInternalNetCallback;
-	friend class ServerNetworkCallback;
 public:
 	LoginModule();
 	~LoginModule();
@@ -30,11 +28,11 @@ public:
 	void OnGateWayDisconnect(NetID netid);
 private:
 	bool ListenForGateway();
+	bool ConnectToDbServer();
 	void OnRegisterGateway(const char *data);
 
 	uint32_t	m_current_time;
 	SocketMgr*	m_network;
-	ServerNetworkCallback* m_network_callback;
 	ServerInternalNetCallback* m_internal_network_callback;
 	
 	struct GateWay 

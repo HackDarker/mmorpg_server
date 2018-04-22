@@ -71,8 +71,11 @@ int DbModule::Start()
 {
 	m_network->RegisterCallback(SOCKET_TYPE_INTER,m_internal_network_callback);
 
-	if (!ListenCommserver())
-	{
+	if (!ListenCommserver()){
+		return false;
+	}
+
+	if (!ConnectToDbServer()){
 		return false;
 	}
 
@@ -99,7 +102,7 @@ int DbModule::Stop()
 bool DbModule::ListenCommserver()
 {
 	std::string host_ip = "0.0.0.0";
-	uint16_t listen_port = 8002;
+	uint16_t listen_port = 8003;
 	int ret = m_network->Listen(host_ip.c_str(),listen_port);
 	if (ret < 0)
 	{
@@ -108,6 +111,22 @@ bool DbModule::ListenCommserver()
 	}
 
 	printf("ListenForGateWay begin=======on====port:%u\n", listen_port);
+	return true;
+}
+
+bool GlobalModule::ConnectToDbServer()
+{
+	std::string db_server_ip = "127.0.0.1";
+	uint16_t db_server_port  = 8002;
+
+	int ret = m_network->Connect(db_server_ip.c_str(), db_server_port);
+	if (ret < 0)
+	{
+		printf("Connect to DBServer[%s:%d] Fail!==ret==%d", db_server_ip.c_str(),db_server_port,ret);
+		return false;
+	}
+	printf("Connect to DBServer[%s:%d] suc.==ret===%d", db_server_ip.c_str(), db_server_port,ret);
+
 	return true;
 }
 

@@ -90,7 +90,7 @@ int GlobalModule::Stop()
 bool GlobalModule::ListenForCommserver()
 {
 	std::string host_ip = "0.0.0.0";
-	uint16_t listen_port = 8001;
+	uint16_t listen_port = 8002;
 	int ret = m_network->Listen(host_ip.c_str(),listen_port);
 	if (ret < 0)
 	{
@@ -105,7 +105,7 @@ bool GlobalModule::ListenForCommserver()
 bool GlobalModule::ConnectToDbServer()
 {
 	std::string db_server_ip = "127.0.0.1";
-	uint16_t db_server_port  = 8002;
+	uint16_t db_server_port  = 8001;
 
 	int ret = m_network->Connect(db_server_ip.c_str(), db_server_port);
 	if (ret < 0)

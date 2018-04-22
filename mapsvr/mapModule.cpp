@@ -84,7 +84,7 @@ int MapModule::Stop()
 bool MapModule::ConnectToGlobalServer()
 {
 	std::string global_server_ip = "127.0.0.1";
-	uint16_t global_server_port  = 8001;
+	uint16_t global_server_port  = 8002;
 
 	int netId = m_network->Connect(global_server_ip.c_str(), global_server_port);
 	if (netId < 0)
@@ -102,7 +102,7 @@ bool MapModule::ConnectToGlobalServer()
 bool MapModule::ConnectToDbServer()
 {
 	std::string db_server_ip = "127.0.0.1";
-	uint16_t db_server_port  = 8002;
+	uint16_t db_server_port  = 8001;
 
 	int netId = m_network->Connect(db_server_ip.c_str(), db_server_port);
 	if (netId < 0)

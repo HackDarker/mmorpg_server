@@ -75,10 +75,6 @@ int DbModule::Start()
 		return false;
 	}
 
-	if (!ConnectToDbServer()){
-		return false;
-	}
-
 	return true;
 }
 
@@ -102,7 +98,7 @@ int DbModule::Stop()
 bool DbModule::ListenCommserver()
 {
 	std::string host_ip = "0.0.0.0";
-	uint16_t listen_port = 8003;
+	uint16_t listen_port = 8001;
 	int ret = m_network->Listen(host_ip.c_str(),listen_port);
 	if (ret < 0)
 	{

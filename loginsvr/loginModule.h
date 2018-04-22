@@ -29,6 +29,7 @@ public:
 private:
 	bool ListenForGateway();
 	bool ConnectToDbServer();
+	bool ConnectToGlobalServer();
 	void OnRegisterGateway(const char *data);
 
 	uint32_t	m_current_time;

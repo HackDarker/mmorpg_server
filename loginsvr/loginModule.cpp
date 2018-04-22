@@ -81,7 +81,7 @@ int LoginModule::Start()
 int LoginModule::Update()
 {
 	m_current_time = getFrameTime();
-	printf("now time is %u\n", m_current_time);
+	//printf("now time is %u\n", m_current_time);
 }
 
 int LoginModule::Stop()
@@ -92,7 +92,7 @@ int LoginModule::Stop()
 bool LoginModule::ListenForGateway()
 {
 	std::string host_ip = "127.0.0.1";
-	uint16_t listen_port = 8001;
+	uint16_t listen_port = 8003;
 	int ret = m_network->Listen(host_ip.c_str(),listen_port);
 	if (ret < 0)
 	{
@@ -100,12 +100,14 @@ bool LoginModule::ListenForGateway()
 		return false;
 	}
 	printf("ListenForGateWay begin=======on====port:%u\n", listen_port);
+
+	return true;
 }
 
 bool LoginModule::ConnectToDbServer()
 {
 	std::string db_server_ip = "127.0.0.1";
-	uint16_t db_server_port  = 8002;
+	uint16_t db_server_port  = 8001;
 
 	int ret = m_network->Connect(db_server_ip.c_str(), db_server_port);
 	if (ret < 0)
@@ -117,6 +119,23 @@ bool LoginModule::ConnectToDbServer()
 
 	return true;
 }
+
+bool LoginModule::ConnectToGlobalServer()
+{
+	std::string global_server_ip = "127.0.0.1";
+	uint16_t global_server_port  = 8002;
+
+	int ret = m_network->Connect(global_server_ip.c_str(), global_server_port);
+	if (ret < 0)
+	{
+		printf("Connect to GlobalServer[%s:%d] Fail!==ret==%d", global_server_ip.c_str(),global_server_port,ret);
+		return false;
+	}
+	printf("Connect to GlobalServer[%s:%d] suc.==ret===%d", global_server_ip.c_str(), global_server_port,ret);
+
+	return true;
+}
+
 
 void LoginModule::ResizeGateWayList(uint32_t size)
 {

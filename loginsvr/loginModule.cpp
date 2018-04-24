@@ -3,6 +3,8 @@
 #include "../networklib/socketMgr.h"
 #include "loginModule.h"
 
+#define RETRY_CONNECT_TIME 10 //seconds
+
 class ServerInternalNetCallback : public IEngineNetCallback
 {
 public:
@@ -50,6 +52,14 @@ LoginModule::LoginModule()
 	m_current_time = 0;
 	m_network = SocketMgr::Instance();
 	m_internal_network_callback = new ServerInternalNetCallback(this);
+
+	m_databaseClient.type       = CLIENT_TYPE_DATABASE;
+	m_databaseClient.serverIp   = "127.0.0.1";
+	m_databaseClient.serverPort = 8001;
+
+	m_gameClient.type       = CLIENT_TYPE_GAME;
+	m_gameClient.serverIp   = "127.0.0.1";
+	m_gameClient.serverPort = 8002;
 }
 
 LoginModule::~LoginModule()
@@ -60,13 +70,13 @@ LoginModule::~LoginModule()
 
 int LoginModule::Init()
 {
+	m_network->RegisterCallback(SOCKET_TYPE_INTER,m_internal_network_callback);
+
 	return true;
 }
 
 int LoginModule::Start()
 {
-	m_network->RegisterCallback(SOCKET_TYPE_INTER,m_internal_network_callback);
-
 	if (!ListenForGateway()){
 		return false;
 	}
@@ -75,13 +85,25 @@ int LoginModule::Start()
 		return false;
 	}
 
+	if (!ConnectToGlobalServer()){
+		return false;
+	}
+
 	return true;
 }
 
-int LoginModule::Update()
+int LoginModule::Update(loopcounter)
 {
 	m_current_time = getFrameTime();
-	//printf("now time is %u\n", m_current_time);
+
+	if(!(loopcounter % 200)) { // 10 second
+		if(m_databaseClient.retryTime && m_current_time > m_databaseClient.retryTime){
+			ConnectToDbServer();
+		}
+		if(m_gameClient.retryTime && m_current_time > m_gameClient.retryTime){
+			ConnectToGlobalServer();
+		}
+	}
 }
 
 int LoginModule::Stop()
@@ -106,36 +128,44 @@ bool LoginModule::ListenForGateway()
 
 bool LoginModule::ConnectToDbServer()
 {
-	std::string db_server_ip = "127.0.0.1";
-	uint16_t db_server_port  = 8001;
-
-	int ret = m_network->Connect(db_server_ip.c_str(), db_server_port);
-	if (ret < 0)
-	{
-		printf("Connect to DBServer[%s:%d] Fail!==ret==%d", db_server_ip.c_str(),db_server_port,ret);
+	int netid = m_network->Connect(m_databaseClient.serverIp.c_str(), m_databaseClient.serverPort);
+	if (netid < 0){
+		printf("Connect to DBServer[%s:%d] Fail!==ret==%d", m_databaseClient.serverIp.c_str(),m_databaseClient.serverPort,ret);
+		m_databaseClient->retryTime = m_current_time + RETRY_CONNECT_TIME;
 		return false;
 	}
-	printf("Connect to DBServer[%s:%d] suc.==ret===%d", db_server_ip.c_str(), db_server_port,ret);
+	m_databaseClient.retryTime = 0;
 
+	RegisterToDbServer();
+	printf("Connect to DBServer[%s:%d] suc.==ret===%d", m_databaseClient.serverIp.c_str(), m_databaseClient.serverPort,ret);
+	return true;
+}
+
+bool LoginModule::RegisterToDbServer()
+{
 	return true;
 }
 
 bool LoginModule::ConnectToGlobalServer()
 {
-	std::string global_server_ip = "127.0.0.1";
-	uint16_t global_server_port  = 8002;
-
-	int ret = m_network->Connect(global_server_ip.c_str(), global_server_port);
-	if (ret < 0)
-	{
-		printf("Connect to GlobalServer[%s:%d] Fail!==ret==%d", global_server_ip.c_str(),global_server_port,ret);
+	int netid = m_network->Connect(m_gameClient.serverIp.c_str(), m_gameClient.serverPort);
+	if (netid < 0){
+		m_gameClient->retryTime = m_current_time + RETRY_CONNECT_TIME;
+		printf("Connect to GlobalServer[%s:%d] Fail!==ret==%d", m_gameClient.serverIp.c_str(),m_gameClient.serverPort,ret);
 		return false;
 	}
-	printf("Connect to GlobalServer[%s:%d] suc.==ret===%d", global_server_ip.c_str(), global_server_port,ret);
+	m_gameClient.retryTime = 0;
 
+	RegisterToGlobalServer();
+
+	printf("Connect to GlobalServer[%s:%d] suc.==ret===%d", m_gameClient.serverIp.c_str(), m_gameClient.serverPort,ret);
 	return true;
 }
 
+bool LoginModule::RegisterToGlobalServer()
+{
+	return true;
+}
 
 void LoginModule::ResizeGateWayList(uint32_t size)
 {

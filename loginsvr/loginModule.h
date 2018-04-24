@@ -12,6 +12,49 @@ class ServerInternalNetCallback;
 class SocketMgr;
 class WorldPacket;
 
+enum
+{
+	CLIENT_TYPE_NULL = 0,
+	CLIENT_TYPE_DATABASE,
+	CLIENT_TYPE_GAME,
+};
+
+struct GateWay 
+{
+	GateWay():netid(-1), index(-1), last_active_time(0), has_checked(false), ip(""){}
+	NetID	 netid;
+	int		 index;
+	std::string	 ip;
+	uint16_t port;
+	bool	has_checked;
+	uint32_t last_active_time;
+	void Reset()
+	{
+		netid = -1;
+		index = -1;
+		ip    = "";
+		port  = 0;
+		last_active_time = 0;
+		has_checked = false;
+	}
+};
+
+struct CommClient
+{
+	uint16_t  type;
+	NetID	 netid;
+	uint32_t retryTime;
+	uint16_t serverPort;
+	std::string serverIp;
+	
+	CommClient()
+	{
+		type  = 0;
+		netid = 0;
+		retryTime = 0;
+	}
+};
+
 class LoginModule:public IModule
 {
 	friend class ServerInternalNetCallback;
@@ -30,31 +73,17 @@ private:
 	bool ListenForGateway();
 	bool ConnectToDbServer();
 	bool ConnectToGlobalServer();
+
+	bool RegisterToDbServer();
+	bool RegisterToGlobalServer();
 	void OnRegisterGateway(const char *data);
 
 	uint32_t	m_current_time;
 	SocketMgr*	m_network;
 	ServerInternalNetCallback* m_internal_network_callback;
 	
-	struct GateWay 
-	{
-		GateWay():netid(-1), index(-1), last_active_time(0), has_checked(false), ip(""){}
-		NetID	 netid;
-		int		 index;
-		std::string	 ip;
-		uint16_t port;
-		bool	has_checked;
-		uint32_t last_active_time;
-		void Reset()
-		{
-			netid = -1;
-			index = -1;
-			ip    = "";
-			port  = 0;
-			last_active_time = 0;
-			has_checked = false;
-		}
-	};
+	CommClient   m_gameClient;
+	CommClient   m_databaseClient;
 	GateWay*     m_gateway_list;
 	unsigned int m_gateway_size;
 	void		ResizeGateWayList(uint32_t size);

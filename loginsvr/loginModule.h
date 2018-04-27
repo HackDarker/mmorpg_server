@@ -12,13 +12,6 @@ class ServerInternalNetCallback;
 class SocketMgr;
 class WorldPacket;
 
-enum
-{
-	CLIENT_TYPE_NULL = 0,
-	CLIENT_TYPE_DATABASE,
-	CLIENT_TYPE_GAME,
-};
-
 struct GateWay 
 {
 	GateWay():netid(-1), index(-1), last_active_time(0), has_checked(false), ip(""){}

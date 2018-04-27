@@ -25,4 +25,12 @@ typedef uint16_t NetID;
 #define SERVER_TYPE_MAP      4
 #define SERVER_TYPE_LOGIN    5
 
+enum
+{
+	CLIENT_TYPE_NULL = 0,
+	CLIENT_TYPE_DATABASE,
+	CLIENT_TYPE_GAME,
+	CLIENT_TYPE_LOGIN,
+};
+
 #endif

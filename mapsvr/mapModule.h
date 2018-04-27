@@ -12,6 +12,22 @@ class ServerInternalNetCallback;
 class SocketMgr;
 class WorldPacket;
 
+struct CommClient
+{
+	uint16_t  type;
+	NetID	 netId;
+	uint32_t retryTime;
+	uint16_t serverPort;
+	std::string serverIp;
+	
+	CommClient()
+	{
+		type  = 0;
+		netId = 0;
+		retryTime = 0;
+	}
+};
+
 class MapModule: public IModule
 {
 	friend class ServerInternalNetCallback;
@@ -30,8 +46,8 @@ private:
 	bool ConnectToGlobalServer();
 	bool ConnectToDbServer();
 
-	bool RegisterToGlobal();
-	bool RegisterToDatabase();
+	bool RegisterToGlobalServer();
+	bool RegisterToDbServer();
 
 	void OnRecvGlobalServerMsg(const WorldPacket* packet);
 	void OnRecvDbServerMsg(const WorldPacket* packet);
@@ -39,8 +55,9 @@ private:
 	SocketMgr*	m_network;
 	ServerInternalNetCallback* m_internal_network_callback;
 	uint32_t		m_current_time;
-	NetID			m_global_server_id;
-	NetID                   m_db_server_id;
+
+	CommClient   m_gameClient;
+	CommClient   m_databaseClient;
 };
 
 #endif

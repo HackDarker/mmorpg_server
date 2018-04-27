@@ -48,6 +48,10 @@ GlobalModule::GlobalModule()
 	m_network = SocketMgr::Instance();
 	m_internal_network_callback = new ServerInternalNetCallback(this);
 	m_current_time = 0;
+
+	m_databaseClient.type       = CLIENT_TYPE_DATABASE;
+	m_databaseClient.serverIp   = "127.0.0.1";
+	m_databaseClient.serverPort = 8001;
 }
 
 GlobalModule::~GlobalModule()
@@ -58,13 +62,13 @@ GlobalModule::~GlobalModule()
 
 int GlobalModule::Init()
 {
+	m_network->RegisterCallback(SOCKET_TYPE_INTER,m_internal_network_callback);
+
 	return true;
 }
 
 int GlobalModule::Start()
 {
-	m_network->RegisterCallback(SOCKET_TYPE_INTER,m_internal_network_callback);
-
 	if (!ListenForCommserver()){
 		return false;
 	}
@@ -76,10 +80,16 @@ int GlobalModule::Start()
 	return true;
 }
 
-int GlobalModule::Update()
+int GlobalModule::Update(uint32_t loopcounter)
 {
 	m_current_time = getFrameTime();
 	//printf("now time is %u\n", m_current_time);
+
+	if(!(loopcounter % 200)) { // 10 second
+		if(m_databaseClient.retryTime && m_current_time > m_databaseClient.retryTime){
+			ConnectToDbServer();
+		}
+	}
 }
 
 int GlobalModule::Stop()
@@ -104,17 +114,22 @@ bool GlobalModule::ListenForCommserver()
 
 bool GlobalModule::ConnectToDbServer()
 {
-	std::string db_server_ip = "127.0.0.1";
-	uint16_t db_server_port  = 8001;
-
-	int ret = m_network->Connect(db_server_ip.c_str(), db_server_port);
-	if (ret < 0)
-	{
-		printf("Connect to DBServer[%s:%d] Fail!==ret==%d", db_server_ip.c_str(),db_server_port,ret);
+	int netid = m_network->Connect(m_databaseClient.serverIp.c_str(), m_databaseClient.serverPort);
+	if (netid < 0){
+		printf("Connect to DBServer[%s:%d] Fail!==ret==%d", m_databaseClient.serverIp.c_str(),m_databaseClient.serverPort,ret);
+		m_databaseClient->retryTime = m_current_time + RETRY_CONNECT_TIME;
 		return false;
 	}
-	printf("Connect to DBServer[%s:%d] suc.==ret===%d", db_server_ip.c_str(), db_server_port,ret);
+	m_databaseClient.retryTime = 0;
+	m_databaseClient.netId = netid;
 
+	RegisterToDbServer();
+	printf("Connect to DBServer[%s:%d] suc.==ret===%d", m_databaseClient.serverIp.c_str(), m_databaseClient.serverPort,ret);
+	return true;
+}
+
+bool GlobalModule::RegisterToDbServer()
+{
 	return true;
 }
 

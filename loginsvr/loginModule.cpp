@@ -92,7 +92,7 @@ int LoginModule::Start()
 	return true;
 }
 
-int LoginModule::Update(loopcounter)
+int LoginModule::Update(uint32_t loopcounter)
 {
 	m_current_time = getFrameTime();
 
@@ -135,6 +135,7 @@ bool LoginModule::ConnectToDbServer()
 		return false;
 	}
 	m_databaseClient.retryTime = 0;
+	m_databaseClient.netId = netid;
 
 	RegisterToDbServer();
 	printf("Connect to DBServer[%s:%d] suc.==ret===%d", m_databaseClient.serverIp.c_str(), m_databaseClient.serverPort,ret);
@@ -155,6 +156,7 @@ bool LoginModule::ConnectToGlobalServer()
 		return false;
 	}
 	m_gameClient.retryTime = 0;
+	m_gameClient.netId = netid;
 
 	RegisterToGlobalServer();
 
@@ -172,8 +174,7 @@ void LoginModule::ResizeGateWayList(uint32_t size)
 	if (m_gateway_size >= size) return;
 	
 	m_gateway_list = (GateWay *)realloc(m_gateway_list, size * sizeof(GateWay));
-	for (uint32_t i = m_gateway_size; i < size; i++)
-	{
+	for (uint32_t i = m_gateway_size; i < size; i++){
 		m_gateway_list[i].Reset();
 	}
 	m_gateway_size = size;

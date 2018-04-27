@@ -61,10 +61,8 @@ public:
 	}
 	virtual void OnRecv(NetID netid, WorldPacket* packet)
 	{
-		if (m_gateway->m_login_server_id == netid)
-		{
+		if (m_gateway->m_loginClient.netId == netid){
 			m_gateway->OnRecvLoginServerMsg(packet);
-			return;
 		}
 
 	}
@@ -78,11 +76,19 @@ private:
 
 GatewayModule::GatewayModule()
 :m_network(0), m_network_callback(0),m_internal_network_callback(0),
-m_current_time(0),m_login_server_id(-1),m_user_list(0), m_user_size(0)
+m_current_time(0),m_user_list(0), m_user_size(0)
 {
 	m_network = SocketMgr::Instance();
 	m_network_callback = new ServerNetworkCallback(this);
 	m_internal_network_callback = new ServerInternalNetCallback(this);
+
+	m_loginClient.type       = CLIENT_TYPE_LOGIN;
+	m_loginClient.serverIp   = "127.0.0.1";
+	m_loginClient.serverPort = 8001;
+
+	m_gameClient.type        = CLIENT_TYPE_GAME;
+	m_gameClient.serverIp    = "127.0.0.1";
+	m_gameClient.serverPort  = 8002;
 
 	ResizeUserList(1);
 }
@@ -96,14 +102,14 @@ GatewayModule::~GatewayModule()
 
 int GatewayModule::Init()
 {
+	m_network->RegisterCallback(SOCKET_TYPE_CLIENT,m_network_callback);
+	m_network->RegisterCallback(SOCKET_TYPE_INTER,m_internal_network_callback);
+
 	return true;
 }
 
 int GatewayModule::Start()
 {
-	m_network->RegisterCallback(SOCKET_TYPE_CLIENT,m_network_callback);
-	m_network->RegisterCallback(SOCKET_TYPE_INTER,m_internal_network_callback);
-
 	if (!ConnectToLoginServer()){
 		return false;
 	}
@@ -119,11 +125,19 @@ int GatewayModule::Start()
 	return true;
 }
 
-int GatewayModule::Update()
+int GatewayModule::Update(uint32_t loopcounter)
 {
 	m_current_time = getFrameTime();
 
-	printf("now time is %u\n", m_current_time);
+	//printf("now time is %u\n", m_current_time);
+	if(!(loopcounter % 200)) { // 10 second
+		if(m_loginClient.retryTime && m_current_time > m_loginClient.retryTime){
+			ConnectToLoginServer();
+		}
+		if(m_gameClient.retryTime && m_current_time > m_gameClient.retryTime){
+			ConnectToGlobalServer();
+		}
+	}
 	
 	return true;
 }
@@ -135,31 +149,35 @@ int GatewayModule::Stop()
 
 bool GatewayModule::ConnectToLoginServer()
 {
-	std::string login_server_ip = "127.0.0.1";
-	uint16_t login_server_port  = 8001;
-
-	int ret = m_network->Connect(login_server_ip.c_str(), login_server_port);
-	if (ret < 0){
-		printf("Connect to LoginServer[%s:%d] Fail!==ret==%d", login_server_ip.c_str(),login_server_port,ret);
+	int netid = m_network->Connect(m_loginClient.serverIp.c_str(), m_loginClient.serverPort);
+	if (netid < 0){
+		m_loginClient->retryTime = m_current_time + RETRY_CONNECT_TIME;
+		printf("Connect to GlobalServer[%s:%d] Fail!==ret==%d", m_loginClient.serverIp.c_str(),m_loginClient.serverPort,ret);
 		return false;
 	}
-	printf("Connect to LoginServer[%s:%d] suc.==ret===%d", login_server_ip.c_str(), login_server_port,ret);
+	m_loginClient.retryTime = 0;
+	m_loginClient.netId = netid;
 
+	RegisterToLogin();
+
+	printf("Connect to GlobalServer[%s:%d] suc.==ret===%d", m_loginClient.serverIp.c_str(), m_loginClient.serverPort,ret);
 	return true;
 }
 
 bool GatewayModule::ConnectToGlobalServer()
 {
-	std::string global_server_ip = "127.0.0.1";
-	uint16_t global_server_port  = 8002;
-
-	int ret = m_network->Connect(global_server_ip.c_str(), global_server_port);
-	if (ret < 0){
-		printf("Connect to LoginServer[%s:%d] Fail!==ret==%d", global_server_ip.c_str(),global_server_port,ret);
+	int netid = m_network->Connect(m_gameClient.serverIp.c_str(), m_gameClient.serverPort);
+	if (netid < 0){
+		m_gameClient->retryTime = m_current_time + RETRY_CONNECT_TIME;
+		printf("Connect to GlobalServer[%s:%d] Fail!==ret==%d", m_gameClient.serverIp.c_str(),m_gameClient.serverPort,ret);
 		return false;
 	}
-	printf("Connect to LoginServer[%s:%d] suc.==ret===%d", global_server_ip.c_str(), global_server_port,ret);
+	m_gameClient.retryTime = 0;
+	m_gameClient.netId = netid;
 
+	RegisterToGlobalServer();
+
+	printf("Connect to GlobalServer[%s:%d] suc.==ret===%d", m_gameClient.serverIp.c_str(), m_gameClient.serverPort,ret);
 	return true;
 }
 
@@ -174,10 +192,15 @@ bool GatewayModule::ListenForUser()
 		return false;
 	}
 
-	return RegisterToLogin();
+	return true;
 }
 
 bool GatewayModule::RegisterToLogin()
+{
+	return true;
+}
+
+bool GatewayModule::RegisterToGlobalServer()
 {
 	return true;
 }

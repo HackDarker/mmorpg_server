@@ -42,7 +42,7 @@ void GameServer::Loop()
 		loop_count++;
 
 		updateFrameTime();
-		m_module->Update();
+		m_module->Update(loop_count);
 
 		diff_time = getMSTime() - start_time;
 		if(diff_time < 50){

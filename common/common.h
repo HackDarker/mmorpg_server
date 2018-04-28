@@ -33,4 +33,6 @@ enum
 	CLIENT_TYPE_LOGIN,
 };
 
+#define RETRY_CONNECT_TIME 10
+
 #endif

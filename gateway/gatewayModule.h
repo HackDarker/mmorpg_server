@@ -55,7 +55,7 @@ public:
 
 	virtual int Init();
 	virtual int Start();
-	virtual int Update();
+	virtual int Update(uint32_t loopCount);
 	virtual int Stop();
 
 	void OnRecvUserMsg(NetID netid, const WorldPacket* packet);

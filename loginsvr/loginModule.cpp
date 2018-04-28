@@ -92,11 +92,11 @@ int LoginModule::Start()
 	return true;
 }
 
-int LoginModule::Update(uint32_t loopcounter)
+int LoginModule::Update(uint32_t loopCount)
 {
 	m_current_time = getFrameTime();
 
-	if(!(loopcounter % 200)) { // 10 second
+	if(!(loopCount % 200)) { // 10 second
 		if(m_databaseClient.retryTime && m_current_time > m_databaseClient.retryTime){
 			ConnectToDbServer();
 		}
@@ -130,7 +130,7 @@ bool LoginModule::ConnectToDbServer()
 {
 	int netid = m_network->Connect(m_databaseClient.serverIp.c_str(), m_databaseClient.serverPort);
 	if (netid < 0){
-		printf("Connect to DBServer[%s:%d] Fail!==ret==%d", m_databaseClient.serverIp.c_str(),m_databaseClient.serverPort,ret);
+		printf("Connect to DBServer[%s:%d] Fail!==ret==%d", m_databaseClient.serverIp.c_str(),m_databaseClient.serverPort,netid);
 		m_databaseClient->retryTime = m_current_time + RETRY_CONNECT_TIME;
 		return false;
 	}
@@ -138,7 +138,7 @@ bool LoginModule::ConnectToDbServer()
 	m_databaseClient.netId = netid;
 
 	RegisterToDbServer();
-	printf("Connect to DBServer[%s:%d] suc.==ret===%d", m_databaseClient.serverIp.c_str(), m_databaseClient.serverPort,ret);
+	printf("Connect to DBServer[%s:%d] suc.==ret===%d", m_databaseClient.serverIp.c_str(), m_databaseClient.serverPort,netid);
 	return true;
 }
 
@@ -155,7 +155,7 @@ bool LoginModule::ConnectToGlobalServer()
 	int netid = m_network->Connect(m_gameClient.serverIp.c_str(), m_gameClient.serverPort);
 	if (netid < 0){
 		m_gameClient->retryTime = m_current_time + RETRY_CONNECT_TIME;
-		printf("Connect to GlobalServer[%s:%d] Fail!==ret==%d", m_gameClient.serverIp.c_str(),m_gameClient.serverPort,ret);
+		printf("Connect to GlobalServer[%s:%d] Fail!==ret==%d", m_gameClient.serverIp.c_str(),m_gameClient.serverPort,netid);
 		return false;
 	}
 	m_gameClient.retryTime = 0;
@@ -163,13 +163,12 @@ bool LoginModule::ConnectToGlobalServer()
 
 	RegisterToGlobalServer();
 
-	printf("Connect to GlobalServer[%s:%d] suc.==ret===%d", m_gameClient.serverIp.c_str(), m_gameClient.serverPort,ret);
+	printf("Connect to GlobalServer[%s:%d] suc.==ret===%d", m_gameClient.serverIp.c_str(), m_gameClient.serverPort,netid);
 	return true;
 }
 
-bool LoginModule::RegisterToGlobalServer()
+void LoginModule::RegisterToGlobalServer()
 {
-	return true;
 }
 
 void LoginModule::ResizeGateWayList(uint32_t size)

@@ -35,7 +35,7 @@ struct GateWay
 struct CommClient
 {
 	uint16_t  type;
-	NetID	 netid;
+	NetID	 netId;
 	uint32_t retryTime;
 	uint16_t serverPort;
 	std::string serverIp;
@@ -57,7 +57,7 @@ public:
 
 	virtual int Init();
 	virtual int Start();
-	virtual int Update();
+	virtual int Update(uint32_t loopCount);
 	virtual int Stop();
 
 	void OnRecvGateWayMsg(NetID netid, const WorldPacket* packet);

@@ -1,6 +1,6 @@
-
 #include "../common/util_time.h"
 #include "../common/imodule.h"
+#include "../common/commonOpcode.h"
 #include "../networklib/socketMgr.h"
 #include "mapModule.h"
 
@@ -127,14 +127,17 @@ bool MapModule::ConnectToDbServer()
 	return true;
 }
 
-bool MapModule::RegisterToGlobalServer()
+void MapModule::RegisterToGlobalServer()
 {
 	return true;
 }
 
-bool MapModule::RegisterToDbServer()
+void MapModule::RegisterToDbServer()
 {
-	return true;
+	WorldPacket data(C_S2S_REGISTER, 4);
+	data << (uint8_t)SERVER_TYPE_MAP;
+
+	m_network->SendPacket(m_databaseClient.netId,&data);
 }
 
 void MapModule::OnRecvGlobalServerMsg(const WorldPacket* packet)

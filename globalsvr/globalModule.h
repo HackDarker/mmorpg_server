@@ -62,7 +62,7 @@ private:
 	bool ListenForCommserver();
 	bool ConnectToDbServer();
 
-	bool RegisterToDbServer();
+	void RegisterToDbServer();
 	void OnRegisterCommserver(const WorldPacket* packet);
 
 	uint32_t	m_current_time;

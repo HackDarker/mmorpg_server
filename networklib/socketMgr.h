@@ -66,7 +66,7 @@ public:
 	int ModSocketEvent(Socket* s, int w);
 	int SetNoblock(int fd);
 
-	void SendPacket(int fd,WorldPacket* packet);
+	void SendPacket(int netId,WorldPacket* packet);
 	void RegisterCallback(uint16_t type,IEngineNetCallback* call_back);
 private:
 	SocketMgr();

@@ -65,8 +65,8 @@ private:
 	bool ConnectToLoginServer();
 	bool ConnectToGlobalServer();
 
-	bool RegisterToLogin();
-	bool RegisterToGlobalServer();
+	void RegisterToLogin();
+	void RegisterToGlobalServer();
 	void OnRecvLoginServerMsg(const WorldPacket* packet);
 
 	SocketMgr*	m_network;

@@ -128,9 +128,12 @@ bool GlobalModule::ConnectToDbServer()
 	return true;
 }
 
-bool GlobalModule::RegisterToDbServer()
+void GlobalModule::RegisterToDbServer()
 {
-	return true;
+	WorldPacket data(C_S2S_REGISTER, 4);
+	data << (uint8_t)SERVER_TYPE_MAP;
+
+	m_network->SendPacket(m_databaseClient.netId,&data);
 }
 
 void GlobalModule::ResizeCommserverList(uint32_t size)

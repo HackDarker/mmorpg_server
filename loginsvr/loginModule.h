@@ -67,8 +67,8 @@ private:
 	bool ConnectToDbServer();
 	bool ConnectToGlobalServer();
 
-	bool RegisterToDbServer();
-	bool RegisterToGlobalServer();
+	void RegisterToDbServer();
+	void RegisterToGlobalServer();
 	void OnRegisterGateway(const char *data);
 
 	uint32_t	m_current_time;

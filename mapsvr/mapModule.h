@@ -46,15 +46,15 @@ private:
 	bool ConnectToGlobalServer();
 	bool ConnectToDbServer();
 
-	bool RegisterToGlobalServer();
-	bool RegisterToDbServer();
+	void RegisterToGlobalServer();
+	void RegisterToDbServer();
 
 	void OnRecvGlobalServerMsg(const WorldPacket* packet);
 	void OnRecvDbServerMsg(const WorldPacket* packet);
 	
 	SocketMgr*	m_network;
 	ServerInternalNetCallback* m_internal_network_callback;
-	uint32_t		m_current_time;
+	uint32_t	m_current_time;
 
 	CommClient   m_gameClient;
 	CommClient   m_databaseClient;

@@ -142,9 +142,12 @@ bool LoginModule::ConnectToDbServer()
 	return true;
 }
 
-bool LoginModule::RegisterToDbServer()
+void LoginModule::RegisterToDbServer()
 {
-	return true;
+	WorldPacket data(C_S2S_REGISTER, 4);
+	data << (uint8_t)SERVER_TYPE_MAP;
+
+	m_network->SendPacket(m_databaseClient.netId,&data);
 }
 
 bool LoginModule::ConnectToGlobalServer()

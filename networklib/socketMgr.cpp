@@ -194,14 +194,13 @@ void SocketMgr::Startup()
     } 
 }
 
-void SocketMgr::SendPacket(int fd,WorldPacket* packet)
+void SocketMgr::SendPacket(int netId,WorldPacket* packet)
 {
-	if(fd >= MAX_SOCKET_NUM || !m_sockets[fd])
-	{
+	if(netId >= MAX_SOCKET_NUM || !m_sockets[netId]){
         return;
 	}
 
-	m_sockets[fd]->SendPacket(packet);
+	m_sockets[netId]->SendPacket(packet);
 }
 
 void SocketMgr::RegisterCallback(uint16_t type,IEngineNetCallback* call_back)

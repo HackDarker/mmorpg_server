@@ -152,7 +152,7 @@ bool GatewayModule::ConnectToLoginServer()
 	int netid = m_network->Connect(m_loginClient.serverIp.c_str(), m_loginClient.serverPort);
 	if (netid < 0){
 		m_loginClient.retryTime = m_current_time + RETRY_CONNECT_TIME;
-		printf("Connect to GlobalServer[%s:%d] Fail!==ret==%d", m_loginClient.serverIp.c_str(),m_loginClient.serverPort,ret);
+		printf("Connect to GlobalServer[%s:%d] Fail!==ret==%d", m_loginClient.serverIp.c_str(),m_loginClient.serverPort,netid);
 		return false;
 	}
 	m_loginClient.retryTime = 0;
@@ -160,7 +160,7 @@ bool GatewayModule::ConnectToLoginServer()
 
 	RegisterToLogin();
 
-	printf("Connect to GlobalServer[%s:%d] suc.==ret===%d", m_loginClient.serverIp.c_str(), m_loginClient.serverPort,ret);
+	printf("Connect to GlobalServer[%s:%d] suc.==ret===%d", m_loginClient.serverIp.c_str(), m_loginClient.serverPort,netid);
 	return true;
 }
 
@@ -169,7 +169,7 @@ bool GatewayModule::ConnectToGlobalServer()
 	int netid = m_network->Connect(m_gameClient.serverIp.c_str(), m_gameClient.serverPort);
 	if (netid < 0){
 		m_gameClient.retryTime = m_current_time + RETRY_CONNECT_TIME;
-		printf("Connect to GlobalServer[%s:%d] Fail!==ret==%d", m_gameClient.serverIp.c_str(),m_gameClient.serverPort,ret);
+		printf("Connect to GlobalServer[%s:%d] Fail!==ret==%d", m_gameClient.serverIp.c_str(),m_gameClient.serverPort,netid);
 		return false;
 	}
 	m_gameClient.retryTime = 0;
@@ -177,7 +177,7 @@ bool GatewayModule::ConnectToGlobalServer()
 
 	RegisterToGlobalServer();
 
-	printf("Connect to GlobalServer[%s:%d] suc.==ret===%d", m_gameClient.serverIp.c_str(), m_gameClient.serverPort,ret);
+	printf("Connect to GlobalServer[%s:%d] suc.==ret===%d", m_gameClient.serverIp.c_str(), m_gameClient.serverPort,netid);
 	return true;
 }
 
@@ -197,12 +197,12 @@ bool GatewayModule::ListenForUser()
 
 void GatewayModule::RegisterToLogin()
 {
-	return true;
+	
 }
 
 void GatewayModule::RegisterToGlobalServer()
 {
-	return true;
+	
 }
 
 void GatewayModule::ResizeUserList(unsigned int size)

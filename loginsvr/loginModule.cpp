@@ -155,7 +155,7 @@ bool LoginModule::ConnectToGlobalServer()
 {
 	int netid = m_network->Connect(m_gameClient.serverIp.c_str(), m_gameClient.serverPort);
 	if (netid < 0){
-		m_gameClient->retryTime = m_current_time + RETRY_CONNECT_TIME;
+		m_gameClient.retryTime = m_current_time + RETRY_CONNECT_TIME;
 		printf("Connect to GlobalServer[%s:%d] Fail!==ret==%d", m_gameClient.serverIp.c_str(),m_gameClient.serverPort,netid);
 		return false;
 	}

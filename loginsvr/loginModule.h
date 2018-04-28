@@ -43,7 +43,7 @@ struct CommClient
 	CommClient()
 	{
 		type  = 0;
-		netid = 0;
+		netId = 0;
 		retryTime = 0;
 	}
 };

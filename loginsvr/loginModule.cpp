@@ -1,5 +1,6 @@
 #include "../common/util_time.h"
 #include "../common/imodule.h"
+#include "../common/commonOpcode.h"
 #include "../networklib/socketMgr.h"
 #include "loginModule.h"
 
@@ -131,7 +132,7 @@ bool LoginModule::ConnectToDbServer()
 	int netid = m_network->Connect(m_databaseClient.serverIp.c_str(), m_databaseClient.serverPort);
 	if (netid < 0){
 		printf("Connect to DBServer[%s:%d] Fail!==ret==%d", m_databaseClient.serverIp.c_str(),m_databaseClient.serverPort,netid);
-		m_databaseClient->retryTime = m_current_time + RETRY_CONNECT_TIME;
+		m_databaseClient.retryTime = m_current_time + RETRY_CONNECT_TIME;
 		return false;
 	}
 	m_databaseClient.retryTime = 0;
